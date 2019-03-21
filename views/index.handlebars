@@ -1,0 +1,55 @@
+<h1 class="text-center mt-4">Multi Search</h1>
+
+<form action="/search" method="POST" class="mb-3">
+	<div class="row">
+		<div class="col-lg-6" style="margin: auto;">
+			{{#unless searchTerms.length}}
+				<div class="form-group search-terms">
+					<label for="test">Main Search</label>
+					<input style="width:100%" type="text" name="main" class="form-control mb-3" placeholder="Search">
+				</div>
+			{{/unless}}
+			{{#each searchTerms}}
+				{{#unless @index}}
+					<div class="form-group search-terms">
+						<label for="test">Main Search</label>
+						<input style="width:100%" type="text" name="main" value="{{this}}" class="form-control mb-3" placeholder="Search">
+					</div>
+				{{/unless}}
+				{{#if @index}}
+				<div class="input-group mb-3" data-remove="term{{@index}}">
+					<input type="text" placeholder="Search" value="{{this}}" name="term0" class="form-control input-group-lg term">
+					<div class="input-group-append">
+						<button type="button" class="btn btn-outline-secondary js-add-main">Add Main</button>
+						<button type="button" class="btn btn-outline-secondary js-remove">Remove</button>
+					</div>
+				</div>
+				{{/if}}
+			{{/each}}
+			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
+			<button type="button" id="add-term" class="btn btn-outline-dark">Add +</button>
+		</div>
+	</div>
+</form>
+
+<div class="row result-lists">
+	{{#each results}}
+		<div class="col-md-6">
+			<ul class="list-group result-list">
+				<li class="list-group-item">
+					<h5 class="clearfix">{{this.title}} 
+						<button class="js-toggle-descriptions float-right btn btn-outline-dark" data-descriptions="hide">+</button>
+						<button class="js-move btn btn-outline-dark float-right mr-2">Move</button>
+						<span class="js-collapse btn btn-outline-dark float-right mr-2" data-collapse="show">^</span>
+					</h5>
+				</li>
+				{{#each this.links}}
+					<li class="list-group-item result-item">
+						<a href="{{this.link}}">{{this.title}}</a><br>
+						<p class="description">{{this.description}}</p>
+					</li>
+				{{/each}}
+			</ul>
+		</div>
+	{{/each}}
+</div>
