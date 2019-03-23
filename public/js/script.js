@@ -1,24 +1,94 @@
 (function() {
-	// Add click handling to inputs rendered server side
-	(function() {
-		let thisInput, mainTerm, newTerm;
+	document.addEventListener('DOMContentLoaded', () => {
+		initSearchBtns();
+		initResultListControls();
+	});
+
+ 	/**
+	 * Add click handling to buttons rendered server side.
+ 	 */
+	const initSearchBtns = () => {
+		let thisInput;
+		let mainTerm;
+		let newTerm;
+
+		let addMain = e => {
+			e.preventDefault();
+			mainTerm = document.querySelector(`input[name="main"]`).value;
+			newTerm = thisInput.value;
+			thisInput.value = mainTerm !== "" ? `${mainTerm} ${newTerm}` : newTerm;
+		};
+
 		document.querySelectorAll('.input-group').forEach(elm => {
 			thisInput = elm.querySelector('input[type="text"]');
 			elm.querySelector('.js-add-main').addEventListener('click', e => {
-				e.preventDefault();
-				mainTerm = document.querySelector(`input[name="main"]`).value;
-				newTerm = thisInput.value;
-				if (mainTerm !== "") {
-					thisInput.value = `${mainTerm} ${newTerm}`;
-				}
+				addMain(e);
 			});
 	
-			elm.querySelector('.js-remove').addEventListener('click', function(e) {
+			elm.querySelector('.js-remove').addEventListener('click', () => {
 				elm.remove();
 			});
-		});	
-	})();
+		});
+	};
 
+	/**
+	 * Adds hide / show toggle for search results.
+ 	 */
+	const toggleSearchResults = (resultList, toggleElm) => {
+		if (toggleElm.getAttribute('data-collapse') === 'show') {
+			toggleElm.setAttribute('data-collapse', 'hide');
+			toggleElm.innerText = 'Expand';
+			resultList.querySelectorAll('.result-item').forEach(el => {
+				el.style.display = "none";
+			});
+		}
+		else {
+			toggleElm.setAttribute('data-collapse', 'show');
+			toggleElm.innerText = 'Collapse';
+			resultList.querySelectorAll('.result-item').forEach(el => {
+				el.style.display = "block";
+			});
+		}
+	};
+
+	/**
+	 * Adds hide / show toggle for search results descriptions.
+ 	 */
+	const toggleDescriptions = (toggleElm, resultList) => {
+		toggleElm.addEventListener('click', function() {
+			if (this.getAttribute('data-descriptions') === 'hide') {
+				this.setAttribute('data-descriptions', 'show');
+				this.innerText = '-';
+				resultList.querySelectorAll('.description').forEach(function(description) {
+					description.style.display = 'block';
+				});
+			}
+			else {
+				this.setAttribute('data-descriptions', 'hide');
+				this.innerText = '+';
+				resultList.querySelectorAll('.description').forEach(function(description) {
+					description.style.display = 'none';
+				});
+			}
+		});
+	};
+
+	/**
+	 * Applies events listeners to search result list controls.
+ 	 */
+	const initResultListControls = () => {
+		const resultLists = document.querySelectorAll('.result-list');
+		resultLists.forEach(list => {
+			list.querySelector('.js-toggle-search-results').addEventListener('click', function() {
+				toggleSearchResults(list, this);
+			});
+			list.querySelectorAll('.js-toggle-descriptions').forEach(toggleElm => toggleDescriptions(toggleElm, list));
+		});
+	};
+
+	/**
+	 * Creates another search input group when "Add" button is clicked.
+ 	 */
 	function createInputGroup() {
 		var inputGroup = document.createElement('div'),
 				inputGroupAppend = document.createElement('div'),
@@ -65,60 +135,16 @@
 		return inputGroup;
 	}
 
-	function findParent(child, parentClass) {
-		if (child.parentElement.classList.contains(parentClass)) {
-			return child.parentElement;
-		}
-		return findParent(child.parentElement, parentClass);
-	}
-
+	/**
+	 * Triggers createInputGroup fn when "Add" button is clicked.
+ 	 */
 	document.getElementById('add-term').addEventListener('click', function() {
 		document.querySelector('.search-terms').appendChild(createInputGroup());
 	});
 
-	document.querySelectorAll('.js-collapse').forEach(function(elm) {
-		elm.addEventListener('click', function() {
-			parentElm = findParent(this, 'result-list');
-			if (this.getAttribute('data-collapse') === 'show') {
-				this.setAttribute('data-collapse', 'hide');
-				this.innerText = 'Expand';
-				parentElm.querySelectorAll('.result-item').forEach(function(el) {
-					el.style.display = "none";
-				});
-			}
-			else {
-				this.setAttribute('data-collapse', 'show');
-				this.innerText = 'Collapse';
-				parentElm.querySelectorAll('.result-item').forEach(function(el) {
-					el.style.display = "block";
-				});
-			}
-		});
-	});
-
-	(function() {
-		var parentElm;
-		document.querySelectorAll('.js-toggle-descriptions').forEach(function(elm) {
-			elm.addEventListener('click', function() {
-				parentElm = findParent(this, 'result-list');
-				if (this.getAttribute('data-descriptions') === 'hide') {
-					this.setAttribute('data-descriptions', 'show');
-					this.innerText = '-';
-					parentElm.querySelectorAll('.description').forEach(function(description) {
-						description.style.display = 'block';
-					});
-				}
-				else {
-					this.setAttribute('data-descriptions', 'hide');
-					this.innerText = '+';
-					parentElm.querySelectorAll('.description').forEach(function(description) {
-						description.style.display = 'none';
-					});
-				}
-			});
-		});
-	})();
-
+	/**
+	 * Registers .result-list elements as draggable with "Move" button.
+ 	 */
 	dragula([document.querySelector('.result-lists')],  { 
 		moves: function (el, container, handle) {
 			return handle.classList.contains('js-move');
