@@ -17,12 +17,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/search', (req, res) => {
-	const numSearches = Object.keys(req.body).length;
 	const searchPromises = [];
-	const searchTerms = [];
+	let searchData = {
+		terms: [],
+		results: null
+	};
 
 	for (formElm in req.body) {
-		searchTerms.push(req.body[formElm]);
+		searchData.terms.push(req.body[formElm]);
 		searchPromises.push(new Promise((resolve, reject) => {
 			google(req.body[formElm], (err, results) => {
 				err ? reject(err) : resolve(results);
@@ -33,9 +35,11 @@ app.post('/search', (req, res) => {
 	Promise.all(searchPromises).then(data => {
 		const results = data.map(list => {
 			list.links = list.links.filter(searchResult => searchResult.link !== null);
-			return {title: list.query.toUpperCase(), links: list.links};
+			return {title: list.query.toUpperCase(), links: list.links, urlencoded: encodeURIComponent(list.query)};
 		});
-		res.render('index', {multiSearch: true, searchTerms, results});
+		searchData.results = results;
+		console.log(searchData)
+		res.render('index', {searchData});
 	}).catch(err => console.log(err));
 });
 
