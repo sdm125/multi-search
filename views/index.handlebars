@@ -6,39 +6,43 @@
 			{{#unless searchData.terms.length}}
 				<div class="form-group search-terms">
 					<label for="main">Main Search</label>
-					<input style="width:100%" type="text" name="main" class="form-control mb-3" placeholder="Search">
+					<input style="width:100%" type="text" name="main" class="search form-control mb-3" placeholder="Search">
 				</div>
 			{{/unless}}
 			{{#each searchData.terms}}
 				{{#unless @index}}
 					<div class="form-group search-terms">
 						<label for="main">Main Search</label>
-						<input style="width:100%" type="text" name="main" value="{{this}}" class="form-control mb-3" placeholder="Search">
+						<input style="width:100%" type="text" name="main" value="{{this}}" class="search form-control mb-3" placeholder="Search">
 					</div>
 				{{/unless}}
 				{{#if @index}}
 					<div class="input-group mb-3" data-remove="term{{@index}}">
-						<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="form-control input-group-lg term">
+						<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="search form-control input-group-lg term">
 						<div class="input-group-append">
 							<button type="button" class="btn btn-outline-secondary js-add-main">Add Main</button>
-							<button type="button" class="btn btn-outline-secondary js-remove">Remove</button>
+							<button type="button" class="btn btn-outline-secondary js-remove-from-search" data-remove="{{this}}">Remove</button>
 						</div>
 					</div>
 				{{/if}}
 			{{/each}}
 			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
 			<button type="button" id="add-term" class="btn btn-outline-dark">Add +</button>
+			<input type="range" min="20" max="100" value="100" step="10" class="list-width-slider">
 		</div>
 	</div>
 </form>
 
-<div class="row result-lists">
+{{!-- <div class="row result-lists"> --}}
+	<div style="display:flex;flex-wrap:wrap;" class="result-lists">
 	{{#each searchData.results}}
-		<div class="col-md-6">
+		{{!-- <div class="col-md-6"> --}}
+		<div class="list-container" style="width:100%;" data-search="{{this.title}}">
 			<ul class="list-group result-list">
 				<li class="list-group-item">
 					<h5 class="clearfix">
 						{{this.title}}
+						<button class="js-remove-from-list float-right btn btn-outline-dark mr-2" data-search-input-val="{{this.title}}">Close</button>
 						<button class="js-move btn btn-outline-dark float-right mr-2">Move</button>
 						<button class="js-toggle-descriptions float-right btn btn-outline-dark mr-2" data-descriptions="hide">+</button>
 						<span class="js-toggle-search-results btn btn-outline-dark float-right mr-2" data-collapse="show">Collapse</span>

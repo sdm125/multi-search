@@ -38,7 +38,6 @@ app.post('/search', (req, res) => {
 			return {title: list.query.toUpperCase(), links: list.links, urlencoded: encodeURIComponent(list.query)};
 		});
 		searchData.results = results;
-		console.log(searchData)
 		res.render('index', {searchData});
 	}).catch(err => console.log(err));
 });

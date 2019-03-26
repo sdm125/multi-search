@@ -25,11 +25,44 @@
 				addMain(e);
 			});
 	
-			elm.querySelector('.js-remove').addEventListener('click', () => {
+			elm.querySelector('.js-remove-from-search').addEventListener('click', function() {
+				Array.from(document.querySelectorAll('.list-container')).forEach(list => {
+					if (list.getAttribute('data-search').toLowerCase() === this.getAttribute('data-remove').toLowerCase()) {
+						list.remove();
+					}
+				});
 				elm.remove();
 			});
 		});
 	};
+
+	/**
+	 * Adds remove from list handling.
+	 */
+	Array.from(document.querySelectorAll('.js-remove-from-list')).forEach(elm => {
+		elm.addEventListener('click', function() {
+			Array.from(document.querySelectorAll('.search')).forEach(searchInput => {
+				if (searchInput.value.toLowerCase() === elm.getAttribute('data-search-input-val').toLowerCase()) {
+					searchInput.closest('.input-group').remove();
+				}
+				elm.closest('.list-container').remove();
+			});
+		});
+	});
+
+	/**
+	 * Adds control of result list widths to slider.		
+	 */
+	const listContainer = document.querySelectorAll('.list-container');
+	const length = listContainer.length;
+	const listMarginTotal = (5 * ((length * 2) - 2));
+	document.querySelector('.list-width-slider').addEventListener('input', function() {
+		if (this.value >= 10 && this.value <= 100) {
+			Array.from(listContainer).forEach(lc => {
+				lc.style.width = `calc(${this.value}% - ${listMarginTotal}px)`;
+			});
+		}
+	});
 
 	/**
 	 * Adds hide / show toggle for search results.
@@ -120,7 +153,7 @@
 		});
 
 		remove.type = 'button';
-		remove.classList += 'btn btn-outline-secondary js-remove';
+		remove.classList += 'btn btn-outline-secondary js-remove-from-search';
 		remove.innerText = 'Remove';
 		remove.addEventListener('click', e => {
 			e.preventDefault();
