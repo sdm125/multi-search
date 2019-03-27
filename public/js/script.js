@@ -70,14 +70,14 @@
 	const toggleSearchResults = (resultList, toggleElm) => {
 		if (toggleElm.getAttribute('data-collapse') === 'show') {
 			toggleElm.setAttribute('data-collapse', 'hide');
-			toggleElm.innerText = 'Expand';
+			toggleElm.innerHTML = '<img src="/icons/chevron-up.svg">';
 			resultList.querySelectorAll('.result-item').forEach(el => {
 				el.style.display = "none";
 			});
 		}
 		else {
 			toggleElm.setAttribute('data-collapse', 'show');
-			toggleElm.innerText = 'Collapse';
+			toggleElm.innerHTML = '<img src="/icons/chevron-down.svg">';
 			resultList.querySelectorAll('.result-item').forEach(el => {
 				el.style.display = "block";
 			});
