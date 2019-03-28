@@ -12,3 +12,8 @@
 .list-container:last-child {
   margin-right: 0;
 }
+
+.new-tab {
+  height: 24px;
+  width: 24px;
+}

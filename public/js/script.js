@@ -91,14 +91,14 @@
 		toggleElm.addEventListener('click', function() {
 			if (this.getAttribute('data-descriptions') === 'hide') {
 				this.setAttribute('data-descriptions', 'show');
-				this.innerText = '-';
+				this.innerHTML= '<img src="/icons/toggle-right.svg">';
 				resultList.querySelectorAll('.description').forEach(function(description) {
 					description.style.display = 'block';
 				});
 			}
 			else {
 				this.setAttribute('data-descriptions', 'hide');
-				this.innerText = '+';
+				this.innerHTML = '<img src="/icons/toggle-left.svg">';
 				resultList.querySelectorAll('.description').forEach(function(description) {
 					description.style.display = 'none';
 				});
