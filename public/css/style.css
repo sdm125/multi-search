@@ -5,12 +5,18 @@
 .list-container {
   margin: 5px;
   transition: width 200ms linear;
+  display: flex;
+  width: 100%;
 }
 .list-container:first-child {
   margin-left: 0;
 }
 .list-container:last-child {
   margin-right: 0;
+}
+
+.list-container ul {
+  width: 100%;
 }
 
 .new-tab {

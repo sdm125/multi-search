@@ -1,13 +1,14 @@
 (function() {
 	document.addEventListener('DOMContentLoaded', () => {
-		initSearchBtns();
+		initSearchControls();
 		initResultListControls();
 	});
 
  	/**
 	 * Add click handling to buttons rendered server side.
  	 */
-	const initSearchBtns = () => {
+	const initSearchControls = () => {
+		const resultLists = document.querySelector('.result-lists');
 		let thisInput;
 		let mainTerm;
 		let newTerm;
@@ -18,6 +19,13 @@
 			newTerm = thisInput.value;
 			thisInput.value = mainTerm !== "" ? `${mainTerm} ${newTerm}` : newTerm;
 		};
+
+		// let combineSearches = e => {
+		// 	e.preventDefault();
+		// 	mainTerm = document.querySelector(`input[name="main"]`).value;
+		// 	newTerm = thisInput.value;
+		// 	thisInput.value = mainTerm !== "" ? `${mainTerm} ${newTerm}` : newTerm;
+		// };
 
 		document.querySelectorAll('.input-group').forEach(elm => {
 			thisInput = elm.querySelector('input[type="text"]');
@@ -34,12 +42,28 @@
 				elm.remove();
 			});
 		});
+
+	 /**
+	  * Toggles result lists as row or column
+ 	  */
+		document.querySelectorAll('.js-toggle-list-orientation').forEach(elm => {
+			elm.addEventListener('click', function() {
+				if (this.value === 'row') {
+					resultLists.classList.add('flex-row');
+					resultLists.classList.remove('flex-column');
+				}
+				else if (this.value === 'column') {
+					resultLists.classList.add('flex-column');
+					resultLists.classList.remove('flex-row');
+				}
+			});
+		});
 	};
 
 	/**
 	 * Adds remove from list handling.
 	 */
-	Array.from(document.querySelectorAll('.js-remove-from-list')).forEach(elm => {
+	document.querySelectorAll('.js-remove-from-list').forEach(elm => {
 		elm.addEventListener('click', function() {
 			Array.from(document.querySelectorAll('.search')).forEach(searchInput => {
 				if (searchInput.value.toLowerCase() === elm.getAttribute('data-search-input-val').toLowerCase()) {
@@ -48,20 +72,6 @@
 				elm.closest('.list-container').remove();
 			});
 		});
-	});
-
-	/**
-	 * Adds control of result list widths to slider.		
-	 */
-	const listContainer = document.querySelectorAll('.list-container');
-	const length = listContainer.length;
-	const listMarginTotal = (5 * ((length * 2) - 2));
-	document.querySelector('.list-width-slider').addEventListener('input', function() {
-		if (this.value >= 10 && this.value <= 100) {
-			Array.from(listContainer).forEach(lc => {
-				lc.style.width = `calc(${this.value}% - ${listMarginTotal}px)`;
-			});
-		}
 	});
 
 	/**

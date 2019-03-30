@@ -20,16 +20,22 @@ app.post('/search', (req, res) => {
 	const searchPromises = [];
 	let searchData = {
 		terms: [],
-		results: null
+		results: null,
+		orientation: ''
 	};
 
 	for (formElm in req.body) {
-		searchData.terms.push(req.body[formElm]);
-		searchPromises.push(new Promise((resolve, reject) => {
-			google(req.body[formElm], (err, results) => {
-				err ? reject(err) : resolve(results);
-			});
-		}));
+		if(formElm !== 'orientation') {
+			searchData.terms.push(req.body[formElm]);
+			searchPromises.push(new Promise((resolve, reject) => {
+				google(req.body[formElm], (err, results) => {
+					err ? reject(err) : resolve(results);
+				});
+			}));
+		}
+		else {
+			searchData.orientation = req.body[formElm] === 'column';
+		}
 	}
 
 	Promise.all(searchPromises).then(data => {

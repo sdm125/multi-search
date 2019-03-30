@@ -27,15 +27,17 @@
 				{{/if}}
 			{{/each}}
 			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
-			<button type="button" id="add-term" class="btn btn-outline-dark">Add +</button>
-			<input type="range" min="20" max="100" value="100" step="10" class="list-width-slider">
+			<button type="button" id="add-term" class="btn btn-outline-dark mr-2">Add +</button>
+			{{!-- <input type="range" min="20" max="100" value="100" step="10" class="list-width-slider"> --}}
+			<label><input  type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
+			<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
 		</div>
 	</div>
 </form>
 
-<div style="display:flex;flex-wrap:wrap;" class="result-lists">
+<div class="result-lists d-flex {{#if searchData.orientation}}flex-column{{else}}flex-row{{/if}}">
 	{{#each searchData.results}}
-		<div class="list-container" style="width:100%;" data-search="{{this.title}}">
+		<div class="list-container" data-search="{{this.title}}">
 			<ul class="list-group result-list">
 				<li class="list-group-item d-flex justify-content-between align-items-center">
 					<h5 style="margin-bottom: 0;"><span class="js-toggle-search-results mr-1" data-collapse="show"><img src="/icons/chevron-down.svg"></span>{{this.title}}</h5>
