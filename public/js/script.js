@@ -11,7 +11,16 @@
 		inputGroups.forEach(thisInputGroup => {
 			thisSearchTerm = thisInputGroup.querySelector('.search').value;
 			thisResultList = resultLists.filter(rl => rl.getAttribute('data-search').toLowerCase() === thisSearchTerm.toLowerCase());
-			new Search(...thisResultList, thisInputGroup);	
+			thisResultList.length ? new Search(...thisResultList, thisInputGroup) :	new Search(null, thisInputGroup) 
+		});
+
+		/**
+		 * Triggers createInputGroup fn when "Add" button is clicked.
+		 */
+		document.getElementById('add-term').addEventListener('click', function() {
+			let newInputGroup = createInputGroup();
+			document.querySelector('.input-groups').appendChild(newInputGroup);
+			new Search(null, newInputGroup);
 		});
 
 		/**
@@ -23,6 +32,43 @@
 			}
 		});
 	});
+
+	class Search {
+		static searchValues = [];
+		static searchValuesDropDown = document.createElement('ul');
+
+		constructor(resultList, inputGroup) {
+			console.log(resultList)
+			this._resultList = resultList ?	new ResultList(resultList, inputGroup) : null;
+			this._inputGroup = new InputGroup(inputGroup, this._resultList);
+			this._value = this._inputGroup.value;
+			Search.searchValues.push(this._value);
+			this.addEventListeners();
+		}
+
+		populateSearchValuesDropDown() {
+			let li;
+			
+			while (Search.searchValuesDropDown.firstChild) {
+				Search.searchValuesDropDown.removeChild(Search.searchValuesDropDown.firstChild);
+			}
+			
+			Search.searchValues.forEach(val => {
+				li = document.createElement('li');
+				li.innerText = val;
+				Search.searchValuesDropDown.appendChild(li);
+			});
+		}
+
+		addEventListeners() {
+			this._inputGroup.elm.querySelector('.search').addEventListener('keyup', () => {
+				Search.searchValues[Search.searchValues.indexOf(this._value)] = this._inputGroup.value;
+				this._value = this._inputGroup.value;
+				this.populateSearchValuesDropDown();
+				// this._inputGroup.elm.appendChild(Search.searchValuesDropDown);
+			});
+		}
+	}
   
 	class ResultList {
 		constructor(elm, inputGroup) {
@@ -60,7 +106,7 @@
 		toggleDescriptions() {
 			if (this._toggleDescriptionsBtn.getAttribute('data-descriptions') === 'hide') {
 				this._toggleDescriptionsBtn.setAttribute('data-descriptions', 'show');
-				this._toggleDescriptionsBtn.innerHTML= '<img src="/icons/toggle-right.svg">';
+				this._toggleDescriptionsBtn.innerHTML = '<img src="/icons/toggle-right.svg">';
 				this._elm.querySelectorAll('.description').forEach(function(description) {
 					description.style.display = 'block';
 				});
@@ -83,7 +129,6 @@
 			this._toggleDescriptionsBtn.addEventListener('click', () => this.toggleDescriptions());
 			this._removeBtn.addEventListener('click', () => {
 				this.remove();
-				this._inputGroup.remove();
 			});
 		}
 	}
@@ -92,36 +137,49 @@
 		constructor(elm, resultList) {
 			this._elm = elm;
 			this._resultList = resultList;
+			this._searchInput = this._elm.querySelector('.search');
+			this._combineListContainer = this._elm.querySelector('.combine-list-container');
 			this.addEventListeners();
+		}
+
+		get elm() {
+			return this._elm;
+		}
+
+		get value() {
+			return this._searchInput.value;
+		}
+
+		combine(val) {
+			this._searchInput.value = `${this.value} ${val}`;
 		}
 
 		remove() {
 			this._elm.parentNode.removeChild(this._elm);
 		}
 
+		toggleDropDown() {
+			this._combineListContainer.querySelector('ul').style.display = this._combineListContainer.querySelector('ul').style.display === 'none' ? 'block' : 'none';
+		}
+
 		addEventListeners() {
+			const thisInput = this;
+
 			this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
+				// Search.searchValues.splice(Search.searchValues.indexOf(this._inputGroup.value), 1);
 				this.remove();
-				this._resultList.remove();
 			});
-		}
 
-		get value() {
-			return this._elm.querySelector('.search').value;
-		}
-	}
-
-	class Search {
-		static searchValues = [];
-
-		constructor(resultList, inputGroup) {
-			this._resultList = new ResultList(resultList, inputGroup);
-			this._inputGroup = new InputGroup(inputGroup, this._resultList);
-			this.addToValues();
-		}
-
-		addToValues() {
-			Search.searchValues.push(this._inputGroup.value);
+			this._elm.querySelector('.js-combine').addEventListener('click', () => {
+				this.toggleDropDown();
+			});
+			
+			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
+				if (e.target.classList.contains('combine-item')) {
+					thisInput.combine(e.target.innerText);
+					thisInput.toggleDropDown();
+				}
+			});
 		}
 	}
 
@@ -133,8 +191,8 @@
 				inputGroupAppend = document.createElement('div'),
 				newTermInput = document.createElement('input'),
 				remove = document.createElement('button'),
-				addMain = document.createElement('button'),
-				newTermIndex = document.querySelectorAll('.term').length,
+				combine = document.createElement('button'),
+				newTermIndex = document.querySelectorAll('.search').length,
 				newTermName = `term${newTermIndex}`;
 
 		inputGroup.classList += 'input-group mb-3';
@@ -144,40 +202,21 @@
 		newTermInput.type = 'text';
 		newTermInput.setAttribute('placeholder', 'Search');
 		newTermInput.name = newTermName;
-		newTermInput.classList += 'form-control input-group-lg term';
+		newTermInput.classList += 'form-control input-group-lg search';
 
-		addMain.type = 'button';
-		addMain.classList += 'btn btn-outline-secondary';
-		addMain.innerText = 'Add Main';
-		addMain.addEventListener('click', e => {
-			e.preventDefault();
-			let mainTerm = document.querySelector(`input[name="main"]`).value;
-			let newTerm = newTermInput.value;
-			if (mainTerm !== "") {
-				newTermInput.value = `${mainTerm} ${newTerm}`;
-			}
-		});
+		combine.type = 'button';
+		combine.classList += 'btn btn-outline-secondary js-combine';
+		combine.innerHTML = 'Combine <span>&#9660;</span>';
 
 		remove.type = 'button';
 		remove.classList += 'btn btn-outline-secondary js-remove-from-search';
 		remove.innerText = 'Remove';
-		remove.addEventListener('click', e => {
-			e.preventDefault();
-			document.querySelector(`.input-group[data-remove="${newTermName}"]`).remove();
-		});
 
 		inputGroup.appendChild(newTermInput);
-		inputGroupAppend.appendChild(addMain);
+		inputGroupAppend.appendChild(combine);
 		inputGroupAppend.appendChild(remove);
 		inputGroup.appendChild(inputGroupAppend);
 
 		return inputGroup;
 	}
-
-	/**
-	 * Triggers createInputGroup fn when "Add" button is clicked.
- 	 */
-	document.getElementById('add-term').addEventListener('click', function() {
-		document.querySelector('.input-groups').appendChild(createInputGroup());
-	});
 })();

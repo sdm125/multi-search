@@ -1,3 +1,42 @@
+.search {
+  border-right: 0;
+}
+
+.combine-btn {
+  border-radius: 0;
+  border-right: 0;
+}
+
+.combine-list-container  {
+  position: relative;
+}
+
+.combine-list-container ul {
+  display: none;
+  position: absolute;
+  left: 0;
+  padding-left: 0;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  list-style-type: none;
+  z-index: 1000;
+  width: 150%;
+}
+
+.combine-list-container ul li {
+  padding: .375rem .75rem;
+}
+
+.combine-list-container ul li:hover {
+  background: #eee;
+}
+
+.remove-from-search-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 .description {
   display: none;
 }

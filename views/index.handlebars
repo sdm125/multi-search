@@ -6,39 +6,30 @@
 			<div class="input-groups">
 				{{#unless searchData.terms.length}}
 					<div class="input-group mb-3">
-						{{!-- <label for="main">Main Search</label> --}}
-						<input type="text" name="main" class="search form-control input-group-lg" placeholder="Search">
+						<input type="text" name="term0" class="search form-control input-group-lg" placeholder="Search">
 						<div class="input-group-append">
-							<button type="button" class="btn btn-outline-secondary js-add-main">Add Main</button>
-							<button type="button" class="btn btn-outline-secondary js-remove-from-search" data-remove="{{this}}">Remove</button>
+							<button type="button" class="btn btn-outline-secondary js-combine">Combine</button>
+							<button type="button" class="btn btn-outline-secondary js-remove-from-search">Remove</button>
 						</div>
 					</div>
 				{{/unless}}
 				{{#each searchData.terms}}
-					{{#unless @index}}
-						<div class="input-group mb-3">
-							{{!-- <label for="main">Main Search</label> --}}
-							<input type="text" name="main" value="{{this}}" class="search form-control input-group-lg" placeholder="Search">
-							<div class="input-group-append">
-								<button type="button" class="btn btn-outline-secondary js-add-main">Add Main</button>
-								<button type="button" class="btn btn-outline-secondary js-remove-from-search" data-remove="{{this}}">Remove</button>
-							</div>
+					<div class="input-group mb-3">
+						<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="search form-control input-group-lg">
+						<div class="combine-list-container">
+							<button type="button" class="btn btn-outline-secondary js-combine combine-btn">Combine <span>&#9660;</span></button>
+							<ul>
+								{{#each ../searchData.terms}}
+									<li class="combine-item">{{this}}</li>
+								{{/each}}
+							</ul>
 						</div>
-					{{/unless}}
-					{{#if @index}}
-						<div class="input-group mb-3" data-remove="term{{@index}}">
-							<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="search form-control input-group-lg term">
-							<div class="input-group-append">
-								<button type="button" class="btn btn-outline-secondary js-add-main">Add Main</button>
-								<button type="button" class="btn btn-outline-secondary js-remove-from-search" data-remove="{{this}}">Remove</button>
-							</div>
-						</div>
-					{{/if}}
+						<button type="button" class="btn btn-outline-secondary js-remove-from-search remove-from-search-btn">Remove</button>
+					</div>
 				{{/each}}
 			</div>
 			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
 			<button type="button" id="add-term" class="btn btn-outline-dark mr-2">Add +</button>
-			{{!-- <input type="range" min="20" max="100" value="100" step="10" class="list-width-slider"> --}}
 			<label><input  type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
 			<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
 		</div>
@@ -55,7 +46,7 @@
 						<button class="js-remove-from-list float-right btn" data-search-input-val="{{this.title}}"><img src="/icons/trash-2.svg"></button>
 						<button class="js-move btn float-right"><img class="js-move" src="/icons/move.svg"></button>
 						<button class="js-toggle-descriptions float-right btn" data-descriptions="hide"><img src="/icons/toggle-left.svg"></button>
-						<a href="https://www.google.com/search?q={{this.urlencoded}}" target="blank"><button class="btn float-right mr-2"><img class="new-tab" src="/icons/new-tab.svg"></button></a>
+						<a href="https://www.google.com/search?q={{this.urlencoded}}" target="blank"><button class="btn float-left mr-2"><img class="new-tab" src="/icons/new-tab.svg"></button></a>
 					</div>
 				</li>
 				{{#each this.links}}
