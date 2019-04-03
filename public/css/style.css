@@ -37,8 +37,13 @@
   border-bottom-left-radius: 0;
 }
 
-.description {
-  display: none;
+.new-tab {
+  height: 24px;
+  width: 24px;
+}
+
+.result-lists {
+  overflow: scroll;
 }
 
 .list-container {
@@ -58,7 +63,6 @@
   width: 100%;
 }
 
-.new-tab {
-  height: 24px;
-  width: 24px;
+.description {
+  display: none;
 }

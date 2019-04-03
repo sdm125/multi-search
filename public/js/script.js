@@ -65,7 +65,6 @@
 				Search.searchValues[Search.searchValues.indexOf(this._value)] = this._inputGroup.value;
 				this._value = this._inputGroup.value;
 				this.populateSearchValuesDropDown();
-				// this._inputGroup.elm.appendChild(Search.searchValuesDropDown);
 			});
 		}
 	}
@@ -166,7 +165,6 @@
 			const thisInput = this;
 
 			this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
-				// Search.searchValues.splice(Search.searchValues.indexOf(this._inputGroup.value), 1);
 				this.remove();
 			});
 
