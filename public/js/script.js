@@ -190,7 +190,7 @@
 			
 			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
 				if (e.target.classList.contains('combine-item')) {
-					thisInput.combine(e.target.innerText);
+					thisInput.combine(e.target.getAttribute('data-search-term'));
 					thisInput.toggleDropDown();
 				}
 			});

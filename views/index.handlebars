@@ -20,7 +20,7 @@
 							<button type="button" class="btn btn-outline-secondary js-combine combine-btn">Combine <span>&#9660;</span></button>
 							<ul>
 								{{#each ../searchData.terms}}
-									<li class="combine-item">{{this}}</li>
+									<li class="combine-item" data-search-term="{{this}}">{{this}}</li>
 								{{/each}}
 							</ul>
 						</div>
