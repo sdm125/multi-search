@@ -1,6 +1,7 @@
 (function() {
 	document.addEventListener('DOMContentLoaded', () => {
-		const resultLists = Array.from(document.querySelectorAll('.list-container'));
+		const resultLists = document.querySelector('.result-lists');
+		const listContainers = Array.from(document.querySelectorAll('.list-container'));
 		const inputGroups = document.querySelectorAll('.input-group');
 		let thisSearchTerm;
 		let thisResultList;
@@ -10,7 +11,7 @@
 		 */
 		inputGroups.forEach(thisInputGroup => {
 			thisSearchTerm = thisInputGroup.querySelector('.search').value;
-			thisResultList = resultLists.filter(rl => rl.getAttribute('data-search').toLowerCase() === thisSearchTerm.toLowerCase());
+			thisResultList = listContainers.filter(rl => rl.getAttribute('data-search').toLowerCase() === thisSearchTerm.toLowerCase());
 			thisResultList.length ? new Search(...thisResultList, thisInputGroup) :	new Search(null, thisInputGroup) 
 		});
 
@@ -21,6 +22,22 @@
 			let newInputGroup = createInputGroup();
 			document.querySelector('.input-groups').appendChild(newInputGroup);
 			new Search(null, newInputGroup);
+		});
+
+		/**
+		 * Toggles result lists as a row or column.
+		 */
+		document.querySelectorAll('.js-toggle-list-orientation').forEach(toggleOrientation => {
+			toggleOrientation.addEventListener('click', function() {
+				if (this.value === 'row' && !resultLists.classList.contains('flex-row')) {
+					resultLists.classList.add('flex-row');
+					resultLists.classList.remove('flex-column');
+				}
+				else if (this.value === 'column' && !resultLists.classList.contains('flex-column')) {
+					resultLists.classList.add('flex-column');
+					resultLists.classList.remove('flex-row');
+				}
+			});
 		});
 
 		/**
@@ -38,7 +55,6 @@
 		static searchValuesDropDown = document.createElement('ul');
 
 		constructor(resultList, inputGroup) {
-			console.log(resultList)
 			this._resultList = resultList ?	new ResultList(resultList, inputGroup) : null;
 			this._inputGroup = new InputGroup(inputGroup, this._resultList);
 			this._value = this._inputGroup.value;
