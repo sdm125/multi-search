@@ -1,43 +1,19 @@
 (function() {
 	document.addEventListener('DOMContentLoaded', () => {
-		const resultLists = document.querySelector('.result-lists');
-		const listContainers = Array.from(document.querySelectorAll('.list-container'));
-		const inputGroups = document.querySelectorAll('.input-group');
-		let thisSearchTerm;
-		let thisResultList;
+		Search.initSearchControls();
 
 		/**
-		 * Initialize Search classes
+		 * Initialize ResultList classes
 		 */
-		inputGroups.forEach(thisInputGroup => {
-			thisSearchTerm = thisInputGroup.querySelector('.search').value;
-			thisResultList = listContainers.filter(rl => rl.getAttribute('data-search').toLowerCase() === thisSearchTerm.toLowerCase());
-			thisResultList.length ? new Search(...thisResultList, thisInputGroup) :	new Search(null, thisInputGroup) 
+		document.querySelectorAll('.list-container').forEach(thisResultList => {
+			new ResultList(thisResultList);
 		});
 
 		/**
-		 * Triggers createInputGroup fn when "Add" button is clicked.
+		 * Initialize InputGroup classes
 		 */
-		document.getElementById('add-term').addEventListener('click', function() {
-			let newInputGroup = createInputGroup();
-			document.querySelector('.input-groups').appendChild(newInputGroup);
-			new Search(null, newInputGroup);
-		});
-
-		/**
-		 * Toggles result lists as a row or column.
-		 */
-		document.querySelectorAll('.js-toggle-list-orientation').forEach(toggleOrientation => {
-			toggleOrientation.addEventListener('click', function() {
-				if (this.value === 'row' && !resultLists.classList.contains('flex-row')) {
-					resultLists.classList.add('flex-row');
-					resultLists.classList.remove('flex-column');
-				}
-				else if (this.value === 'column' && !resultLists.classList.contains('flex-column')) {
-					resultLists.classList.add('flex-column');
-					resultLists.classList.remove('flex-row');
-				}
-			});
+		document.querySelectorAll('.input-group').forEach(thisInputGroup => {
+			new InputGroup(thisInputGroup);
 		});
 
 		/**
@@ -52,43 +28,181 @@
 
 	class Search {
 		static searchValues = [];
-		static searchValuesDropDown = document.createElement('ul');
+		static dropDown = document.createElement('ul');
 
-		constructor(resultList, inputGroup) {
-			this._resultList = resultList ?	new ResultList(resultList, inputGroup) : null;
-			this._inputGroup = new InputGroup(inputGroup, this._resultList);
-			this._value = this._inputGroup.value;
-			Search.searchValues.push(this._value);
-			this.addEventListeners();
+		static initSearchControls() {
+			const resultLists = document.querySelector('.result-lists');
+	
+			/**
+			 * Triggers createInputGroup fn when "Add" button is clicked.
+			 */
+			document.getElementById('add-input-group').addEventListener('click', function() {
+				let newInputGroup = new InputGroup();
+				document.querySelector('.input-groups').appendChild(newInputGroup.elm);
+			});
+	
+			/**
+			 * Toggles result lists as a row or column.
+			 */
+			document.querySelectorAll('.js-toggle-list-orientation').forEach(toggleOrientation => {
+				toggleOrientation.addEventListener('click', function() {
+					if (this.value === 'row' && !resultLists.classList.contains('flex-row')) {
+						resultLists.classList.add('flex-row');
+						resultLists.classList.remove('flex-column');
+					}
+					else if (this.value === 'column' && !resultLists.classList.contains('flex-column')) {
+						resultLists.classList.add('flex-column');
+						resultLists.classList.remove('flex-row');
+					}
+				});
+			});
+		}
+
+		static getSearchValues() {
+			return Search.searchValues;
+		}
+
+		static addSearchValue(nameVal) {
+			Search.searchValues.push(nameVal);
+		}
+
+		static updateSearchValue(nameVal) {
+			for (let i = 0, found = false; i < Search.searchValues.length && !found; i++) {
+				if (Search.searchValues[i].name === nameVal.name) {
+					Search.searchValues[i].value = nameVal.value;
+					found = !found;
+				}
+			}
+		}
+
+		static removeSearchValue(name) {
+			for (let i = 0, found = false; i < Search.searchValues.length && !found; i++) {
+				if (Search.searchValues[i].name === name) {
+					Search.searchValues.splice(Search.searchValues.indexOf(Search.searchValues[i], 1));
+					found = !found;
+				}
+			}
 		}
 
 		populateSearchValuesDropDown() {
 			let li;
 			
-			while (Search.searchValuesDropDown.firstChild) {
-				Search.searchValuesDropDown.removeChild(Search.searchValuesDropDown.firstChild);
+			while (Search.dropDown.firstChild) {
+				Search.dropDown.removeChild(Search.dropDown.firstChild);
 			}
 			
 			Search.searchValues.forEach(val => {
 				li = document.createElement('li');
 				li.innerText = val;
-				Search.searchValuesDropDown.appendChild(li);
+				Search.dropDown.appendChild(li);
 			});
 		}
 
 		addEventListeners() {
-			this._inputGroup.elm.querySelector('.search').addEventListener('keyup', () => {
-				Search.searchValues[Search.searchValues.indexOf(this._value)] = this._inputGroup.value;
-				this._value = this._inputGroup.value;
-				this.populateSearchValuesDropDown();
-			});
+			this._inputGroup.elm
 		}
 	}
   
-	class ResultList {
-		constructor(elm, inputGroup) {
+	class InputGroup {
+		constructor(elm = this.createInputGroupElm()) {
 			this._elm = elm;
-			this._inputGroup = inputGroup;
+			this._searchInput = this._elm.querySelector('.search');
+			this._combineListContainer = this._elm.querySelector('.combine-list-container');
+			Search.addSearchValue({name: this._searchInput.name, value: this.value});
+			this.addEventListeners();
+		}
+
+		get elm() {
+			return this._elm;
+		}
+
+		get value() {
+			return this._searchInput.value;
+		}
+
+		combine(val) {
+			this._searchInput.value = `${this.value} ${val}`;
+		}
+
+		remove() {
+			this._elm.parentNode.removeChild(this._elm);
+		}
+
+		toggleDropDown() {
+			this._combineListContainer.querySelector('ul').style.display = this._combineListContainer.querySelector('ul').style.display === 'none' ? 'block' : 'none';
+		}
+
+		/**
+		 * Creates search input group element.
+		 */
+		createInputGroupElm() {
+			let inputGroupElm = document.createElement('div'),
+					inputGroupAppend = document.createElement('div'),
+					newTermInput = document.createElement('input'),
+					remove = document.createElement('button'),
+					combineListContainer = document.createElement('div'),
+					combineList = document.createElement('ul'),
+					combine = document.createElement('button'),
+					newTermIndex = document.querySelectorAll('.search').length,
+					newTermName = `term${newTermIndex}`;
+
+			inputGroupElm.classList += 'input-group mb-3';
+			inputGroupElm.setAttribute('data-remove', `term${newTermIndex}`);
+			inputGroupAppend.classList += 'input-group-append';
+
+			newTermInput.type = 'text';
+			newTermInput.setAttribute('placeholder', 'Search');
+			newTermInput.name = newTermName;
+			newTermInput.classList += 'form-control input-group-lg search';
+
+			combine.type = 'button';
+			combine.classList += 'btn btn-outline-secondary js-combine combine-btn';
+			combine.innerHTML = 'Combine <span>&#9660;</span>';
+
+			combineListContainer.classList.add('combine-list-container');
+			combineListContainer.appendChild(combine);
+			combineListContainer.appendChild(combineList);
+
+			remove.type = 'button';
+			remove.classList += 'btn btn-outline-secondary js-remove-from-search';
+			remove.innerText = 'Remove';
+
+			inputGroupElm.appendChild(newTermInput);
+			inputGroupAppend.appendChild(combineListContainer);
+			inputGroupAppend.appendChild(remove);
+			inputGroupElm.appendChild(inputGroupAppend);
+
+			return inputGroupElm;
+		}
+
+		addEventListeners() {
+			const thisInput = this;
+
+			this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
+				this.remove();
+				Search.removeSearchValue(this._searchInput.name);
+			});
+
+			this._elm.querySelector('.js-combine').addEventListener('click', () => {
+				this.toggleDropDown();
+			});
+
+			this._searchInput.addEventListener('keyup', () => {
+				Search.updateSearchValue({name: this._searchInput.name, value: this.value});
+			});
+			
+			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
+				if (e.target.classList.contains('combine-item')) {
+					thisInput.combine(e.target.getAttribute('data-search-term'));
+					thisInput.toggleDropDown();
+				}
+			});
+		}
+	}
+
+	class ResultList {
+		constructor(elm) {
+			this._elm = elm;
 			this._toggleSearchResultsBtn = this._elm.querySelector('.js-toggle-search-results');
 			this._toggleDescriptionsBtn = this._elm.querySelector('.js-toggle-descriptions');
 			this._removeBtn = this._elm.querySelector('.js-remove-from-list');
@@ -142,95 +256,7 @@
 		addEventListeners() {
 			this._toggleSearchResultsBtn.addEventListener('click', () => this.toggleSearchResults());
 			this._toggleDescriptionsBtn.addEventListener('click', () => this.toggleDescriptions());
-			this._removeBtn.addEventListener('click', () => {
-				this.remove();
-			});
+			this._removeBtn.addEventListener('click', () => this.remove());
 		}
-	}
-
-	class InputGroup {
-		constructor(elm, resultList) {
-			this._elm = elm;
-			this._resultList = resultList;
-			this._searchInput = this._elm.querySelector('.search');
-			this._combineListContainer = this._elm.querySelector('.combine-list-container');
-			this.addEventListeners();
-		}
-
-		get elm() {
-			return this._elm;
-		}
-
-		get value() {
-			return this._searchInput.value;
-		}
-
-		combine(val) {
-			this._searchInput.value = `${this.value} ${val}`;
-		}
-
-		remove() {
-			this._elm.parentNode.removeChild(this._elm);
-		}
-
-		toggleDropDown() {
-			this._combineListContainer.querySelector('ul').style.display = this._combineListContainer.querySelector('ul').style.display === 'none' ? 'block' : 'none';
-		}
-
-		addEventListeners() {
-			const thisInput = this;
-
-			this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
-				this.remove();
-			});
-
-			this._elm.querySelector('.js-combine').addEventListener('click', () => {
-				this.toggleDropDown();
-			});
-			
-			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
-				if (e.target.classList.contains('combine-item')) {
-					thisInput.combine(e.target.getAttribute('data-search-term'));
-					thisInput.toggleDropDown();
-				}
-			});
-		}
-	}
-
-  /**
-	 * Creates search input group when "Add" button is clicked.
- 	 */
- const createInputGroup = () => {
-		let inputGroup = document.createElement('div'),
-				inputGroupAppend = document.createElement('div'),
-				newTermInput = document.createElement('input'),
-				remove = document.createElement('button'),
-				combine = document.createElement('button'),
-				newTermIndex = document.querySelectorAll('.search').length,
-				newTermName = `term${newTermIndex}`;
-
-		inputGroup.classList += 'input-group mb-3';
-		inputGroup.setAttribute('data-remove', `term${newTermIndex}`);
-		inputGroupAppend.classList += 'input-group-append';
-
-		newTermInput.type = 'text';
-		newTermInput.setAttribute('placeholder', 'Search');
-		newTermInput.name = newTermName;
-		newTermInput.classList += 'form-control input-group-lg search';
-
-		combine.type = 'button';
-		combine.classList += 'btn btn-outline-secondary js-combine';
-		combine.innerHTML = 'Combine <span>&#9660;</span>';
-
-		remove.type = 'button';
-		remove.classList += 'btn btn-outline-secondary js-remove-from-search';
-		remove.innerText = 'Remove';
-
-		inputGroup.appendChild(newTermInput);
-		inputGroupAppend.appendChild(combine);
-		inputGroupAppend.appendChild(remove);
-		inputGroup.appendChild(inputGroupAppend);
-
-		return inputGroup;
 	}
 })();
