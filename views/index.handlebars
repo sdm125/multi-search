@@ -6,25 +6,32 @@
 			<div class="input-groups">
 				{{#unless searchData.terms.length}}
 					<div class="input-group mb-3">
-						<input type="text" name="term0" class="search form-control input-group-lg" placeholder="Search">
-						<div class="input-group-append">
-							<button type="button" class="btn btn-outline-secondary js-combine">Combine</button>
-							<button type="button" class="btn btn-outline-secondary js-remove-from-search">Remove</button>
-						</div>
-					</div>
-				{{/unless}}
-				{{#each searchData.terms}}
-					<div class="input-group mb-3">
-						<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="search form-control input-group-lg">
+						<input type="text" name="term0" class="search form-control" placeholder="Search">
 						<div class="combine-list-container">
-							<button type="button" class="btn btn-outline-secondary js-combine combine-btn">Combine <span>&#9660;</span></button>
+							<button type="button" class="btn btn-outline-secondary js-combine combine-btn"><img src="/icons/plus-circle.svg"></button>
 							<ul>
 								{{#each ../searchData.terms}}
 									<li class="combine-item" data-search-term="{{this}}">{{this}}</li>
 								{{/each}}
 							</ul>
 						</div>
-						<button type="button" class="btn btn-outline-secondary js-remove-from-search remove-from-search-btn">Remove</button>
+						<button type="button" class="btn btn-outline-secondary js-remove-from-search remove-from-search-btn"><img src="/icons/trash-2.svg"></button>
+						<button type="button" class="btn btn-outline-secondary move-search"><img class="js-move" src="/icons/move.svg"></button>
+					</div>
+				{{/unless}}
+				{{#each searchData.terms}}
+					<div class="input-group mb-3">
+						<input type="text" placeholder="Search" value="{{this}}" name="term{{@index}}" class="search form-control">
+						<div class="combine-list-container">
+							<button type="button" class="btn btn-outline-secondary js-combine combine-btn"><img src="/icons/plus-circle.svg"></button>
+							<ul>
+								{{#each ../searchData.terms}}
+									<li class="combine-item" data-search-term="{{this}}">{{this}}</li>
+								{{/each}}
+							</ul>
+						</div>
+						<button type="button" class="btn btn-outline-secondary js-remove-from-search remove-from-search-btn"><img src="/icons/trash-2.svg"></button>
+						<button type="button" class="btn btn-outline-secondary move-search"><img class="js-move" src="/icons/move.svg"></button>
 					</div>
 				{{/each}}
 			</div>

@@ -21,7 +21,7 @@
   border-radius: .25rem;
   list-style-type: none;
   z-index: 1000;
-  width: 150%;
+  width: 8rem;
 }
 
 .combine-list-container ul li {
@@ -33,6 +33,13 @@
 }
 
 .remove-from-search-btn {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.move-search {
+  border-left: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -42,7 +49,7 @@
   width: 24px;
 }
 
-.result-lists {
+.results-list {
   overflow: scroll;
 }
 
@@ -65,4 +72,8 @@
 
 .description {
   display: none;
+}
+
+.form-control {
+  height: calc(1.5em + .75rem + 4px);
 }

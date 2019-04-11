@@ -17,9 +17,15 @@
 		});
 
 		/**
-		 * Registers .result-list elements as draggable with "Move" button.
+		 * Register .result-list and .input-groups elements as draggable with "Move" button.
 		 */
 		dragula([document.querySelector('.result-lists')],  { 
+			moves: function (el, container, handle) {
+				return handle.classList.contains('js-move');
+			}
+		});
+
+		dragula([document.querySelector('.input-groups')],  { 
 			moves: function (el, container, handle) {
 				return handle.classList.contains('js-move');
 			}
@@ -168,6 +174,7 @@
 					combineListContainer = document.createElement('div'),
 					combineList = document.createElement('ul'),
 					combine = document.createElement('button'),
+					move = document.createElement('button'),
 					newTermIndex = document.querySelectorAll('.search').length,
 					newTermName = `term${newTermIndex}`;
 
@@ -182,19 +189,24 @@
 
 			combine.type = 'button';
 			combine.classList += 'btn btn-outline-secondary js-combine combine-btn';
-			combine.innerHTML = 'Combine <span>&#9660;</span>';
+			combine.innerHTML = '<img src="/icons/plus-circle.svg">';
 
 			combineListContainer.classList.add('combine-list-container');
 			combineListContainer.appendChild(combine);
 			combineListContainer.appendChild(combineList);
 
 			remove.type = 'button';
-			remove.classList += 'btn btn-outline-secondary js-remove-from-search';
-			remove.innerText = 'Remove';
+			remove.classList += 'btn btn-outline-secondary js-remove-from-search remove-from-search-btn';
+			remove.innerHTML = '<img src="/icons/trash-2.svg">';
+
+			move.type = 'button';
+			move.classList += 'btn btn-outline-secondary move-search';
+			move.innerHTML = '<img class="js-move" src="/icons/move.svg">';
 
 			inputGroupElm.appendChild(newTermInput);
 			inputGroupAppend.appendChild(combineListContainer);
 			inputGroupAppend.appendChild(remove);
+			inputGroupAppend.appendChild(move);
 			inputGroupElm.appendChild(inputGroupAppend);
 
 			return inputGroupElm;
