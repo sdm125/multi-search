@@ -62,6 +62,10 @@
 			return Search.searchValues;
 		}
 
+		static getSearchValue(val) {
+			return Search.searchValues.filter(sv => sv.name === val);
+		}
+
 		static addSearchValue(nameVal) {
 			Search.searchValues.push(nameVal);
 		}
@@ -209,8 +213,14 @@
 			});
 
 			this._searchInput.addEventListener('keyup', () => {
-				Search.updateSearchValue({name: this._searchInput.name, value: this.value});
+				if (Search.getSearchValue(this._searchInput.name)) {
+					Search.updateSearchValue({name: this._searchInput.name, value: this.value});
+				}
+				else {
+					Search.addSearchValue({name: this._searchInput.name, value: this.value});
+				}
 				Search.updateCombineDropDown();
+				console.log(Search.getSearchValues())
 			});
 			
 			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
