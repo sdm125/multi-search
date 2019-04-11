@@ -33,9 +33,6 @@
 	});
 
 	class Search {
-		static searchValues = [];
-		static dropDown = document.createElement('ul');
-
 		static initSearchControls() {
 			const resultLists = document.querySelector('.result-lists');
 	
@@ -112,22 +109,22 @@
 				}
 			});
 
-			InputGroup.InputGroups.forEach(ig => {
+			InputGroup.inputGroups.forEach(ig => {
 				ig.updateCombineDropDown(updatedCombineDropDownList);
 			});
 		}
 	}
-  
-	class InputGroup {
-		static InputGroups = [];
 
+	Search.searchValues = [];
+  Search.dropDown = document.createElement('ul');
+	class InputGroup {
 		constructor(elm = this.createInputGroupElm()) {
 			this._elm = elm;
 			this._searchInput = this._elm.querySelector('.search');
 			this._combineListContainer = this._elm.querySelector('.combine-list-container');
 			this._combineListElm = this._combineListContainer.querySelector('ul');
 			Search.addSearchValue({name: this._searchInput.name, value: this.value});
-			InputGroup.InputGroups.push(this);
+			InputGroup.inputGroups.push(this);
 			this.addEventListeners();
 		}
 
@@ -243,6 +240,8 @@
 			});
 		}
 	}
+
+	InputGroup.inputGroups = [];
 
 	class ResultList {
 		constructor(elm) {
