@@ -74,49 +74,50 @@
 		}
 
 		static updateSearchValue(nameVal) {
-			for (let i = 0, found = false; i < Search.searchValues.length && !found; i++) {
-				if (Search.searchValues[i].name === nameVal.name) {
-					Search.searchValues[i].value = nameVal.value;
-					found = !found;
+			Search.searchValues.forEach(search => {
+				if (search.name === nameVal.name) {
+					search.value = nameVal.value;
 				}
-			}
+			});
 		}
 
 		static removeSearchValue(name) {
-			for (let i = 0, found = false; i < Search.searchValues.length && !found; i++) {
-				if (Search.searchValues[i].name === name) {
-					Search.searchValues.forEach((val, i) => {
-						if (val.name = name) {
-							Search.searchValues.splice(i, 1);
-						}
-					})
-					found = !found;
+			Search.searchValues.forEach((val, i) => {
+				if (val.name = name) {
+					Search.searchValues.splice(i, 1);
 				}
-			}
+			});
 			Search.updateCombineDropDown();
 		}
 
 		static updateCombineDropDown() {
+			InputGroup.inputGroups.forEach(ig => {
+				ig.updateCombineDropDown(Search.getCombineDropDown());
+			});
+		}
+
+		static getCombineDropDown() {
 			let li;
-			let updatedCombineDropDownList = document.createElement('ul');
+			let combineDropDownList = document.createElement('ul');
 
 			Search.getSearchValues().forEach(nameVal => {
 				if (nameVal.value) {
 					li = document.createElement('li');
 					li.innerText = nameVal.value;
 					li.setAttribute('data-search-term', nameVal.value);
-					updatedCombineDropDownList.appendChild(li);
+					combineDropDownList.appendChild(li);
 				}
 			});
 
-			InputGroup.inputGroups.forEach(ig => {
-				ig.updateCombineDropDown(updatedCombineDropDownList);
-			});
+			return combineDropDownList;
 		}
 	}
 
+	/*
+	 * Static Search values
+	 */
 	Search.searchValues = [];
-  Search.dropDown = document.createElement('ul');
+
 	class InputGroup {
 		constructor(elm = this.createInputGroupElm()) {
 			this._elm = elm;
@@ -146,12 +147,7 @@
 		}
 
 		toggleCombineDropDown() {
-			if (this._combineListContainer.querySelector('ul')) {
-				this._combineListContainer.querySelector('ul').style.display = this._combineListContainer.querySelector('ul').style.display === 'none' ? 'block' : 'none';
-			}
-			else {
-				Search.updateCombineDropDown();
-			}
+			this._combineListElm.style.display = this._combineListElm.style.display === 'none' ? 'block' : 'none';
 		}
 
 		updateCombineDropDown(updatedCombineDropDownList) {
@@ -188,6 +184,8 @@
 			combine.classList += 'btn btn-outline-secondary js-combine combine-btn';
 			combine.innerHTML = '<img src="/icons/plus-circle.svg">';
 
+			combineList = Search.getCombineDropDown();
+
 			combineListContainer.classList.add('combine-list-container');
 			combineListContainer.appendChild(combine);
 			combineListContainer.appendChild(combineList);
@@ -217,7 +215,7 @@
 			});
 
 			this._elm.querySelector('.js-combine').addEventListener('click', () => {
-				!this._combineListContainer.querySelector('ul') && Search.updateCombineDropDown();
+				// !this._combineListContainer.querySelector('ul') && Search.updateCombineDropDown();
 				this.toggleCombineDropDown();
 			});
 
@@ -229,7 +227,6 @@
 					Search.addSearchValue({name: this._searchInput.name, value: this.value});
 				}
 				Search.updateCombineDropDown();
-				console.log(Search.getSearchValues())
 			});
 			
 			this._combineListContainer.querySelector('ul').addEventListener('click', function(e) {
@@ -241,6 +238,9 @@
 		}
 	}
 
+	/*
+	 * Static InputGroup values
+	 */
 	InputGroup.inputGroups = [];
 
 	class ResultList {
