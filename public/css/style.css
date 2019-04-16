@@ -26,6 +26,7 @@
 
 .combine-list-container ul li {
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 
 .combine-list-container ul li:hover {
