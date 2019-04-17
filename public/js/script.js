@@ -35,13 +35,25 @@
 	class Search {
 		static initSearchControls() {
 			const resultLists = document.querySelector('.result-lists');
-	
+			
+			const addInputGroup = () => {
+				let newInputGroup = new InputGroup();
+				document.querySelector('.input-groups').appendChild(newInputGroup.elm);
+			};
+
 			/**
 			 * Triggers createInputGroup fn when "Add" button is clicked.
 			 */
 			document.getElementById('add-input-group').addEventListener('click', function() {
-				let newInputGroup = new InputGroup();
-				document.querySelector('.input-groups').appendChild(newInputGroup.elm);
+				addInputGroup();
+			});
+
+			/**
+			 * Reset, remove all input groups.
+			 */
+			document.getElementById('reset').addEventListener('click', () => {
+				InputGroup.inputGroups.forEach(ip => ip.remove());
+				addInputGroup();
 			});
 	
 			/**
@@ -59,6 +71,8 @@
 					}
 				});
 			});
+
+
 		}
 
 		static getSearchValues() {
@@ -147,7 +161,7 @@
 
 		remove() {
 			Search.removeSearchValue(this._searchInput.name);
-			this._elm.parentNode.removeChild(this._elm);
+			this._elm.remove();
 		}
 
 		toggleCombineDropDown() {
@@ -160,7 +174,7 @@
 			this._combineListElm && this._combineListElm.remove();
 			this._combineListElm = updatedCombineDropDownList;
 			this._combineListContainer.appendChild(this._combineListElm);
-			
+
 			this._combineListElm.addEventListener('click', function(event) {
 				thisInput.combine(event);
 			});
