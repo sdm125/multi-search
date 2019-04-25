@@ -37,7 +37,9 @@
 			</div>
 			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
 			<button type="button" id="add-input-group" class="btn btn-outline-dark">Add +</button>
-			<button type="button" id="reset" class="btn btn-outline-dark mr-2">Reset</button>
+			<button type="button" id="reset" class="btn btn-outline-dark">Reset</button>
+			<button type="button" id="save" class="btn btn-outline-dark">Save</button>
+			<span id="saved-search-container"><button type="button" id="load" class="btn btn-outline-dark" data-toggle-saved-search-list="closed">Load</button></span>
 			<label><input  type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
 			<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
 		</div>

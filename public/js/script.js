@@ -35,17 +35,12 @@
 	class Search {
 		static initSearchControls() {
 			const resultLists = document.querySelector('.result-lists');
-			
-			const addInputGroup = () => {
-				let newInputGroup = new InputGroup();
-				document.querySelector('.input-groups').appendChild(newInputGroup.elm);
-			};
 
 			/**
 			 * Triggers createInputGroup fn when "Add" button is clicked.
 			 */
 			document.getElementById('add-input-group').addEventListener('click', function() {
-				addInputGroup();
+				Search.addInputGroup();
 			});
 
 			/**
@@ -53,7 +48,41 @@
 			 */
 			document.getElementById('reset').addEventListener('click', () => {
 				InputGroup.inputGroups.forEach(ip => ip.remove());
-				addInputGroup();
+				Search.addInputGroup();
+			});
+
+			/**
+			 * Save current searches to local storage.
+			 */
+			document.getElementById('save').addEventListener('click', () => {
+				storageHelper.saveCurrentSearches();
+				console.log(localStorage)
+			});
+
+	
+			/**
+			 * Toggle saved searches dropdown.
+			 */
+			document.getElementById('load').addEventListener('click', function() {
+				if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
+					document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
+					this.setAttribute('data-toggle-saved-search-list', 'opened');
+				}
+				else {
+					document.querySelector('#saved-search-container ul').remove();
+					this.setAttribute('data-toggle-saved-search-list', 'closed');
+				}
+			});
+
+			/**
+			 * Load saved searches from local storage.
+			 */
+			document.getElementById('saved-search-container').addEventListener('click', function(e) {
+				if (e.target.classList.contains('js-load-search')) {
+					storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
+					document.querySelector('#saved-search-container ul').remove();
+					document.getElementById('load').setAttribute('data-toggle-saved-search-list', 'closed');
+				}
 			});
 	
 			/**
@@ -71,9 +100,14 @@
 					}
 				});
 			});
-
-
 		}
+
+		static addInputGroup(name, value) {
+			let newInputGroup = new InputGroup();
+			name && newInputGroup.setName(name);
+			value && newInputGroup.setValue(value);
+			document.querySelector('.input-groups').appendChild(newInputGroup.elm);
+		};
 
 		static getSearchValues() {
 			return Search.searchValues;
@@ -152,6 +186,14 @@
 			return this._searchInput.value;
 		}
 
+		setValue(val) {
+			this._searchInput.value = val;
+		}
+
+		setName(name) {
+			this._searchInput.name = name;
+		}
+
 		combine(event) {
 			if (event.target.classList.contains('combine-item')) {
 				this._searchInput.value = `${this.value} ${event.target.getAttribute('data-search-term')}`;
@@ -161,6 +203,7 @@
 
 		remove() {
 			Search.removeSearchValue(this._searchInput.name);
+			InputGroup.inputGroups = InputGroup.inputGroups.filter(ip => ip !== this);
 			this._elm.remove();
 		}
 
@@ -239,7 +282,6 @@
 			});
 
 			this._elm.querySelector('.js-combine').addEventListener('click', () => {
-				// !this._combineListContainer.querySelector('ul') && Search.updateCombineDropDown();
 				this.toggleCombineDropDown();
 			});
 
@@ -321,6 +363,45 @@
 			this._toggleSearchResultsBtn.addEventListener('click', () => this.toggleSearchResults());
 			this._toggleDescriptionsBtn.addEventListener('click', () => this.toggleDescriptions());
 			this._removeBtn.addEventListener('click', () => this.remove());
+		}
+	}
+
+	class storageHelper {
+		static saveCurrentSearches() {
+			localStorage.setItem(storageHelper.generateID(), JSON.stringify(Search.searchValues));
+		}
+
+		static generateID() {
+			return Math.random().toString(20).replace(/0./, '_');
+		}
+
+		static loadSavedSearch(id) {
+			let searches = JSON.parse(localStorage.getItem(id));
+
+			InputGroup.inputGroups.forEach(ip => ip.remove());
+
+			searches.forEach(search => {
+				Search.addInputGroup(search.name, search.value);
+			});
+		}
+
+		static getStoredSearchDropDown() {
+			let li;
+			let storedSearchDropDownList = document.createElement('ul');
+
+			for (let search in localStorage) {
+				if (localStorage.hasOwnProperty(search)) {
+					li = document.createElement('li');
+					li.setAttribute('data-search-id', search)
+					li.classList.add('saved-search-item');
+					li.classList.add('js-load-search');
+					li.innerText = search;
+					li.setAttribute('data-saved-search-id', search);
+					storedSearchDropDownList.appendChild(li);
+				}
+			}
+
+			return storedSearchDropDownList;
 		}
 	}
 })();

@@ -25,7 +25,7 @@ app.post('/search', (req, res) => {
 	};
 
 	for (formElm in req.body) {
-		if(formElm !== 'orientation') {
+		if (formElm !== 'orientation') {
 			searchData.terms.push(req.body[formElm]);
 			searchPromises.push(new Promise((resolve, reject) => {
 				google(req.body[formElm], (err, results) => {

@@ -45,6 +45,15 @@
   border-bottom-left-radius: 0;
 }
 
+#saved-search-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#saved-search-container ul li {
+  cursor: pointer;
+}
+
 .new-tab {
   height: 24px;
   width: 24px;
