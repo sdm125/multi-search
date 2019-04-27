@@ -1,4 +1,8 @@
-<h1 class="text-center mt-4">Multi Search</h1>
+<header class="text-center mb-4">
+	<img src="/icons/search.svg" class="magnifying-glass">
+	<img src="/icons/search.svg" class="magnifying-glass">
+	<img src="/icons/search.svg" class="magnifying-glass">
+</header>
 
 <form action="/search" method="POST" class="mb-3">
 	<div class="row">
@@ -36,10 +40,10 @@
 				{{/each}}
 			</div>
 			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
-			<button type="button" id="add-input-group" class="btn btn-outline-dark">Add +</button>
+			<button type="button" id="add-input-group" class="btn btn-outline-dark">+ <img src="/icons/search.svg"></button>
 			<button type="button" id="reset" class="btn btn-outline-dark">Reset</button>
-			<button type="button" id="save" class="btn btn-outline-dark">Save</button>
-			<span id="saved-search-container"><button type="button" id="load" class="btn btn-outline-dark" data-toggle-saved-search-list="closed">Load</button></span>
+			<button type="button" id="save" class="btn btn-outline-dark"><img src="/icons/save.svg"></button>
+			<span id="saved-search-container"><button type="button" id="load" class="btn btn-outline-dark" data-toggle-saved-search-list="closed"><img src="/icons/archive.svg"></button></span>
 			<label><input  type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
 			<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
 		</div>
