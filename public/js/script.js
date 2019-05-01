@@ -15,6 +15,22 @@
 		document.querySelectorAll('.input-group').forEach(thisInputGroup => {
 			new InputGroup(thisInputGroup);
 		});
+		
+		/**
+		 * Nav toggle
+		 */
+		document.querySelector('.nav-toggle').addEventListener('click', function() {
+			if (this.getAttribute('data-toggle') === 'closed') {
+				this.setAttribute('data-toggle', 'open');
+				this.src = '/icons/x.svg';
+				document.querySelector('.pop-out-menu').classList.add('active');
+			}
+			else {
+				this.setAttribute('data-toggle', 'closed');
+				this.src = '/icons/menu.svg';
+				document.querySelector('.pop-out-menu').classList.remove('active');
+			}
+		});
 
 		/**
 		 * Register .result-list and .input-groups elements as draggable with "Move" button.
@@ -80,8 +96,8 @@
 			document.getElementById('saved-search-container').addEventListener('click', function(e) {
 				if (e.target.classList.contains('js-load-search')) {
 					storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
-					document.querySelector('#saved-search-container ul').remove();
-					document.getElementById('load').setAttribute('data-toggle-saved-search-list', 'closed');
+					document.querySelector('.nav-toggle').setAttribute('data-toggle', 'closed');
+					document.querySelector('.pop-out-menu').classList.remove('active');
 				}
 			});
 	

@@ -10,7 +10,17 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<nav><img src="/icons/menu.svg" class="ml-3 mt-2"></nav>
+	<nav>
+		<img src="/icons/menu.svg" class="ml-3 mt-2 nav-toggle" data-toggle="closed">
+		<div class="pop-out-menu">
+			<ul>
+				<li id="save"><img src="/icons/save.svg"> SAVE CURRENT SEARCH</li>
+				<li>UPDATE SAVED SEARCH</li>
+				<li id="saved-search-container"><span id="load" data-toggle-saved-search-list="closed"><img src="/icons/archive.svg"> LOAD SAVED SEARCH</span></li>
+				<li>SETTINGS</li>
+			</ul>
+		</div>
+	</nav>
 	<div class="container">
 		{{{body}}}
 	</div>

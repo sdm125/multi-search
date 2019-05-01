@@ -1,5 +1,41 @@
-nav img {
+.nav-toggle {
+  position: relative;
   height: 2.25rem;
+  z-index: 101;
+  transition: transform 200ms;
+}
+
+.pop-out-menu {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  padding: 20px;
+  z-index: 100;
+  background: rgba(242, 242, 242, .8);
+  transform: translateX(-250px);
+  transition: transform 200ms;
+}
+
+.pop-out-menu > ul {
+  list-style-type: none;
+  padding-top: 40px;
+  padding-left: 0;
+}
+
+.pop-out-menu ul li {
+  cursor: pointer;
+}
+
+.pop-out-menu.active {
+  transform: translateX(0);
+}
+
+.pop-out-menu-active {
+  transform: translateX(220px);
+}
+
+.container {
+  transition: transform 200ms;
 }
 
 .magnifying-glass:nth-child(1) {
