@@ -46,7 +46,16 @@
 				return handle.classList.contains('js-move');
 			}
 		});
+
+		displaySaveCurrentSearchModal();
 	});
+
+	function displaySaveCurrentSearchModal() {
+		let modal = document.createElement('div');
+		modal.classList.add('modal');
+		modal.innerText = 'modal';
+		document.querySelector('body').appendChild(modal);
+	}
 
 	class Search {
 		static initSearchControls() {
@@ -97,6 +106,7 @@
 				if (e.target.classList.contains('js-load-search')) {
 					storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
 					document.querySelector('.nav-toggle').setAttribute('data-toggle', 'closed');
+					document.querySelector('.nav-toggle').src = '/icons/menu.svg';
 					document.querySelector('.pop-out-menu').classList.remove('active');
 				}
 			});
