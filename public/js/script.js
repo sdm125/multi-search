@@ -135,10 +135,6 @@
 			document.querySelector('.input-groups').appendChild(newInputGroup.elm);
 		};
 
-		static getSearchValues() {
-			return Search.searchValues;
-		}
-
 		static getSearchValue(val) {
 			return Search.searchValues.filter(sv => sv.name === val);
 		}
@@ -173,8 +169,7 @@
 		static getCombineDropDown() {
 			let li;
 			let combineDropDownList = document.createElement('ul');
-
-			Search.getSearchValues().forEach(nameVal => {
+			Search.searchValues.forEach(nameVal => {
 				if (nameVal.value) {
 					li = document.createElement('li');
 					li.classList.add('combine-item');
@@ -214,6 +209,7 @@
 
 		setValue(val) {
 			this._searchInput.value = val;
+			Search.updateSearchValue({name: this._searchInput.name, value: this.value});
 		}
 
 		setName(name) {
@@ -409,6 +405,8 @@
 			searches.forEach(search => {
 				Search.addInputGroup(search.name, search.value);
 			});
+
+			Search.updateCombineDropDown();
 		}
 
 		static getStoredSearchDropDown() {
@@ -418,7 +416,7 @@
 			for (let search in localStorage) {
 				if (localStorage.hasOwnProperty(search)) {
 					li = document.createElement('li');
-					li.setAttribute('data-search-id', search)
+					li.setAttribute('data-search-id', search);
 					li.classList.add('saved-search-item');
 					li.classList.add('js-load-search');
 					li.innerText = search;
