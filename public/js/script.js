@@ -1,6 +1,7 @@
 (function() {
 	document.addEventListener('DOMContentLoaded', () => {
 		Search.initSearchControls();
+		Nav.init();
 
 		/**
 		 * Initialize ResultList classes
@@ -15,47 +16,22 @@
 		document.querySelectorAll('.input-group').forEach(thisInputGroup => {
 			new InputGroup(thisInputGroup);
 		});
-		
-		/**
-		 * Nav toggle
-		 */
-		document.querySelector('.nav-toggle').addEventListener('click', function() {
-			if (this.getAttribute('data-toggle') === 'closed') {
-				this.setAttribute('data-toggle', 'open');
-				this.src = '/icons/x.svg';
-				document.querySelector('.pop-out-menu').classList.add('active');
-			}
-			else {
-				this.setAttribute('data-toggle', 'closed');
-				this.src = '/icons/menu.svg';
-				document.querySelector('.pop-out-menu').classList.remove('active');
-			}
-		});
 
 		/**
 		 * Register .result-list and .input-groups elements as draggable with "Move" button.
 		 */
-		dragula([document.querySelector('.result-lists')],  { 
+		dragula([document.querySelector('.result-lists')], { 
 			moves: function (el, container, handle) {
 				return handle.classList.contains('js-move');
 			}
 		});
 
-		dragula([document.querySelector('.input-groups')],  { 
+		dragula([document.querySelector('.input-groups')], { 
 			moves: function (el, container, handle) {
 				return handle.classList.contains('js-move');
 			}
 		});
-
-		displaySaveCurrentSearchModal();
 	});
-
-	function displaySaveCurrentSearchModal() {
-		let modal = document.createElement('div');
-		modal.classList.add('modal');
-		modal.innerText = 'modal';
-		document.querySelector('body').appendChild(modal);
-	}
 
 	class Search {
 		static initSearchControls() {
@@ -75,30 +51,7 @@
 				InputGroup.inputGroups.forEach(ip => ip.remove());
 				Search.addInputGroup();
 			});
-
-			/**
-			 * Save current searches to local storage.
-			 */
-			document.getElementById('save').addEventListener('click', () => {
-				storageHelper.saveCurrentSearches();
-				console.log(localStorage)
-			});
-
 	
-			/**
-			 * Toggle saved searches dropdown.
-			 */
-			document.getElementById('load').addEventListener('click', function() {
-				if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
-					document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
-					this.setAttribute('data-toggle-saved-search-list', 'opened');
-				}
-				else {
-					document.querySelector('#saved-search-container ul').remove();
-					this.setAttribute('data-toggle-saved-search-list', 'closed');
-				}
-			});
-
 			/**
 			 * Load saved searches from local storage.
 			 */
@@ -389,12 +342,17 @@
 	}
 
 	class storageHelper {
-		static saveCurrentSearches() {
-			localStorage.setItem(storageHelper.generateID(), JSON.stringify(Search.searchValues));
+		static saveCurrentSearches(name) {
+				localStorage.setItem(name, JSON.stringify(Search.searchValues));
 		}
 
-		static generateID() {
-			return Math.random().toString(20).replace(/0./, '_');
+		static validateSaveCurrentSearch(name) {
+			if (localStorage.getItem(name) === null) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 
 		static loadSavedSearch(id) {
@@ -426,6 +384,87 @@
 			}
 
 			return storedSearchDropDownList;
+		}
+	}
+
+	class Nav {
+		static showModal(type) {
+			document.querySelector('.modal-container').classList.remove('hide');
+			document.querySelector(`.${type}-search-modal`).classList.remove('hide');
+		}
+
+		static closeModal() {
+			document.querySelector('.modal-container').classList.add('hide');
+			document.querySelector('.save-search-modal .validation-msg').innerText = '';
+			document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
+		}
+
+		static openNav() {
+			var navToggleBtn = document.querySelector('.nav-toggle');
+			navToggleBtn.setAttribute('data-toggle', 'open');
+			navToggleBtn.src = '/icons/x.svg';
+			document.querySelector('.pop-out-menu').classList.add('active');
+		}
+
+		static closeNav() {
+			var navToggleBtn = document.querySelector('.nav-toggle');
+			navToggleBtn.setAttribute('data-toggle', 'closed');
+			navToggleBtn.src = '/icons/menu.svg';
+			document.querySelector('.pop-out-menu').classList.remove('active');
+		}
+		
+		static init() {
+			/**
+			 * Nav toggle
+			 */
+			document.querySelector('.nav-toggle').addEventListener('click', function() {
+				this.getAttribute('data-toggle') === 'closed' ? Nav.openNav() : Nav.closeNav();
+			});
+
+			/**
+			 * Open save current search modal
+			 */
+			document.getElementById('open-save-modal').addEventListener('click', () => {
+				Nav.closeNav();
+				Nav.showModal('save');
+			});
+
+			/**
+			 * Save current search to local storage
+			 */
+			document.getElementById('save-current-search').addEventListener('click', function() {
+				var saveCurrentSearchName = this.previousElementSibling.previousElementSibling.value;
+				if (storageHelper.validateSaveCurrentSearch(saveCurrentSearchName)) {
+					storageHelper.saveCurrentSearches(saveCurrentSearchName);
+					Nav.closeModal();
+				}
+				else {
+					document.querySelector('.save-search-modal .validation-msg').innerText = `There is already a search saved as "${saveCurrentSearchName}". Please try a different name.`;
+				}
+			})
+
+			/**
+			 * Cancel/close modal dialog window
+			 */
+			document.querySelectorAll('.cancel-modal').forEach(cancelModal => {
+				cancelModal.addEventListener('click', () => {
+					Nav.closeModal();
+				})
+			})
+			
+			/**
+			 * Toggle saved searches dropdown.
+			 */
+			document.getElementById('load').addEventListener('click', function() {
+				if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
+					document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
+					this.setAttribute('data-toggle-saved-search-list', 'opened');
+				}
+				else {
+					document.querySelector('#saved-search-container ul').remove();
+					this.setAttribute('data-toggle-saved-search-list', 'closed');
+				}
+			});
 		}
 	}
 })();

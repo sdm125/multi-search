@@ -71,3 +71,25 @@
 		</div>
 	{{/each}}
 </div>
+
+<div class="modal-container hide">
+	<div class="modal-dialog-window save-search-modal hide">
+		<h3>Save Current Search</h3>
+		<label for="currentSearchName">Name</label>
+		<input type="text" class="form-control mb-3" name="currentSearchName">
+		<p class="validation-msg"></p>
+		<button id="save-current-search" class="btn btn-outline-secondary">Save</button>
+		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
+	</div>
+
+	<div class="modal-dialog-window update-search-modal hide">
+		<h3>Update a Saved Search</h3>
+		<button class="btn btn-outline-secondary">Update</button>
+		<button class="cancel-modal tn btn-outline-secondary">Cancel</button>
+	</div>
+
+	<div class="modal-dialog-window load-search-modal hide">
+		<h3>Load a Saved Search</h3>
+		<button class="btn btn-outline-secondary">Open</button>
+	</div>
+</div>
