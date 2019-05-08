@@ -83,13 +83,25 @@
 	</div>
 
 	<div class="modal-dialog-window update-search-modal hide">
-		<h3>Update a Saved Search</h3>
-		<button class="btn btn-outline-secondary">Update</button>
-		<button class="cancel-modal tn btn-outline-secondary">Cancel</button>
+		<h3>Update Saved Search</h3>
+		<div class="no-saved-searches">
+			<p>No searches have been saved yet. Try adding a few searches then click "Save Search" from the menu.</p>
+			<button class="cancel-modal btn btn-outline-secondary">Close</button>
+		</div>
+		<div class="saved-searches">
+			<ul class="saved-search-list"></ul>
+				<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
+		</div>
+	</div>
+
+	<div class="modal-dialog-window update-search-validate-modal hide">
+		<h5></h5>
+		<button id="update-saved-search" class="btn btn-outline-secondary">Update</button>
+		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
 	</div>
 
 	<div class="modal-dialog-window load-search-modal hide">
-		<h3>Load a Saved Search</h3>
+		<h3>Load Saved Search</h3>
 		<button class="btn btn-outline-secondary">Open</button>
 	</div>
 </div>

@@ -355,6 +355,13 @@
 			}
 		}
 
+		static getAllSavedSearches() {
+			let searchNames = Object.keys(localStorage);
+			let savedSearches = [];
+			searchNames.forEach(name => savedSearches.push({name: name,  values: localStorage.getItem(name)}));
+			return savedSearches;
+		}
+
 		static loadSavedSearch(id) {
 			let searches = JSON.parse(localStorage.getItem(id));
 
@@ -389,25 +396,38 @@
 
 	class Nav {
 		static showModal(type) {
+			let modalToShow = document.querySelector(`.${type}-search-modal`)
+			
 			document.querySelector('.modal-container').classList.remove('hide');
-			document.querySelector(`.${type}-search-modal`).classList.remove('hide');
+			document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
+				if (modalDialogWindow !== modalToShow) {
+					modalDialogWindow.classList.add('hide');
+				}
+			});
+
+			if (modalToShow.classList.contains('hide')) {
+				modalToShow.classList.remove('hide');
+			}
 		}
 
 		static closeModal() {
 			document.querySelector('.modal-container').classList.add('hide');
 			document.querySelector('.save-search-modal .validation-msg').innerText = '';
 			document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
+			Array.from(document.querySelector('.update-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
+				saveSearchListItem.remove();
+			})
 		}
 
 		static openNav() {
-			var navToggleBtn = document.querySelector('.nav-toggle');
+			let navToggleBtn = document.querySelector('.nav-toggle');
 			navToggleBtn.setAttribute('data-toggle', 'open');
 			navToggleBtn.src = '/icons/x.svg';
 			document.querySelector('.pop-out-menu').classList.add('active');
 		}
 
 		static closeNav() {
-			var navToggleBtn = document.querySelector('.nav-toggle');
+			let navToggleBtn = document.querySelector('.nav-toggle');
 			navToggleBtn.setAttribute('data-toggle', 'closed');
 			navToggleBtn.src = '/icons/menu.svg';
 			document.querySelector('.pop-out-menu').classList.remove('active');
@@ -441,8 +461,50 @@
 				else {
 					document.querySelector('.save-search-modal .validation-msg').innerText = `There is already a search saved as "${saveCurrentSearchName}". Please try a different name.`;
 				}
-			})
+			});
 
+			/**
+			 * Open update saved search modal. Select saved search from list. Sets update button data-update-search attribute for update-search-validate-modal.
+			 */
+			document.getElementById('open-update-modal').addEventListener('click', () => {
+				Nav.closeNav();
+				Nav.showModal('update');
+
+				if (localStorage.length > 0) {
+					document.querySelector('.saved-searches').classList.remove('hide');
+					document.querySelector('.no-saved-searches').classList.add('hide');
+					storageHelper.getAllSavedSearches().forEach(savedSearch => {
+						let savedSearchListItem = document.createElement('li');
+
+						savedSearchListItem.addEventListener('click', function(){
+							document.querySelectorAll('.saved-search-list li').forEach(savedSearchListItem => {
+								savedSearchListItem.addEventListener('click', function() {
+									document.querySelector('.update-search-modal').classList.add('hide');
+									document.querySelector('.update-search-validate-modal').classList.remove('hide');
+									document.querySelector('.update-search-validate-modal #update-saved-search').setAttribute('data-update-search-name', this.innerText);
+									document.querySelector('.update-search-validate-modal h5').innerText = `Update saved search "${this.innerText}" with current search?`;
+								});
+							});
+						});
+						
+						savedSearchListItem.innerText = savedSearch.name;
+						document.querySelector('.saved-search-list').appendChild(savedSearchListItem);
+					});
+				}
+				else {
+					document.querySelector('.saved-searches').classList.add('hide');
+					document.querySelector('.no-saved-searches').classList.remove('hide');
+				}
+			});
+
+			/**
+			 * Update a saved search with the current search. data-update-search-name attribute set by update-search-modal li on click.
+			 */
+			document.getElementById('update-saved-search').addEventListener('click', function(){
+				Nav.closeModal();
+				storageHelper.saveCurrentSearches(this.getAttribute('data-update-search-name'));
+			});
+			
 			/**
 			 * Cancel/close modal dialog window
 			 */
