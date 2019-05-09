@@ -53,18 +53,6 @@
 			});
 	
 			/**
-			 * Load saved searches from local storage.
-			 */
-			document.getElementById('saved-search-container').addEventListener('click', function(e) {
-				if (e.target.classList.contains('js-load-search')) {
-					storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
-					document.querySelector('.nav-toggle').setAttribute('data-toggle', 'closed');
-					document.querySelector('.nav-toggle').src = '/icons/menu.svg';
-					document.querySelector('.pop-out-menu').classList.remove('active');
-				}
-			});
-	
-			/**
 			 * Toggles result lists as a row or column.
 			 */
 			document.querySelectorAll('.js-toggle-list-orientation').forEach(toggleOrientation => {
@@ -414,7 +402,12 @@
 			document.querySelector('.modal-container').classList.add('hide');
 			document.querySelector('.save-search-modal .validation-msg').innerText = '';
 			document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
+			
 			Array.from(document.querySelector('.update-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
+				saveSearchListItem.remove();
+			});
+
+			Array.from(document.querySelector('.load-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
 				saveSearchListItem.remove();
 			})
 		}
@@ -471,20 +464,17 @@
 				Nav.showModal('update');
 
 				if (localStorage.length > 0) {
-					document.querySelector('.saved-searches').classList.remove('hide');
-					document.querySelector('.no-saved-searches').classList.add('hide');
+					document.querySelector('.update-search-modal .saved-searches').classList.remove('hide');
+					document.querySelector('.update-search-modal .no-saved-searches').classList.add('hide');
+
 					storageHelper.getAllSavedSearches().forEach(savedSearch => {
 						let savedSearchListItem = document.createElement('li');
 
 						savedSearchListItem.addEventListener('click', function(){
-							document.querySelectorAll('.saved-search-list li').forEach(savedSearchListItem => {
-								savedSearchListItem.addEventListener('click', function() {
-									document.querySelector('.update-search-modal').classList.add('hide');
-									document.querySelector('.update-search-validate-modal').classList.remove('hide');
-									document.querySelector('.update-search-validate-modal #update-saved-search').setAttribute('data-update-search-name', this.innerText);
-									document.querySelector('.update-search-validate-modal h5').innerText = `Update saved search "${this.innerText}" with current search?`;
-								});
-							});
+							document.querySelector('.update-search-modal').classList.add('hide');
+							document.querySelector('.update-search-validate-modal').classList.remove('hide');
+							document.querySelector('.update-search-validate-modal #update-saved-search').setAttribute('data-update-search-name', this.innerText);
+							document.querySelector('.update-search-validate-modal h5').innerText = `Update saved search "${this.innerText}" with current search?`;
 						});
 						
 						savedSearchListItem.innerText = savedSearch.name;
@@ -492,8 +482,8 @@
 					});
 				}
 				else {
-					document.querySelector('.saved-searches').classList.add('hide');
-					document.querySelector('.no-saved-searches').classList.remove('hide');
+					document.querySelector('.update-search-modal .saved-searches').classList.add('hide');
+					document.querySelector('.update-search-modal .no-saved-searches').classList.remove('hide');
 				}
 			});
 
@@ -503,6 +493,40 @@
 			document.getElementById('update-saved-search').addEventListener('click', function(){
 				Nav.closeModal();
 				storageHelper.saveCurrentSearches(this.getAttribute('data-update-search-name'));
+			});
+
+			/**
+			 * Load saved searches from local storage.
+			 */
+			document.getElementById('open-load-modal').addEventListener('click', function(e) {
+				Nav.closeNav();
+				Nav.showModal('load');
+
+				if (localStorage.length > 0) {
+					document.querySelector('.load-search-modal .saved-searches').classList.remove('hide');
+					document.querySelector('.load-search-modal .no-saved-searches').classList.add('hide');
+
+					storageHelper.getAllSavedSearches().forEach(savedSearch => {
+						let savedSearchListItem = document.createElement('li');
+
+						savedSearchListItem.addEventListener('click', function(){
+							storageHelper.loadSavedSearch(savedSearch.name);
+							Nav.closeModal();
+						});
+						
+						savedSearchListItem.innerText = savedSearch.name;
+						document.querySelector('.load-search-modal .saved-search-list').appendChild(savedSearchListItem);
+					});
+				}
+				else {
+					document.querySelector('.load-search-modal .saved-searches').classList.add('hide');
+					document.querySelector('.load-search-modal .no-saved-searches').classList.remove('hide');
+				}
+
+				// if (e.target.classList.contains('js-load-search')) {
+				// 	storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
+				// 	document.querySelector('.pop-out-menu').classList.remove('active');
+				// }
 			});
 			
 			/**
@@ -517,16 +541,16 @@
 			/**
 			 * Toggle saved searches dropdown.
 			 */
-			document.getElementById('load').addEventListener('click', function() {
-				if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
-					document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
-					this.setAttribute('data-toggle-saved-search-list', 'opened');
-				}
-				else {
-					document.querySelector('#saved-search-container ul').remove();
-					this.setAttribute('data-toggle-saved-search-list', 'closed');
-				}
-			});
+			// document.getElementById('load').addEventListener('click', function() {
+			// 	if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
+			// 		document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
+			// 		this.setAttribute('data-toggle-saved-search-list', 'opened');
+			// 	}
+			// 	else {
+			// 		document.querySelector('#saved-search-container ul').remove();
+			// 		this.setAttribute('data-toggle-saved-search-list', 'closed');
+			// 	}
+			// });
 		}
 	}
 })();
