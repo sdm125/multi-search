@@ -413,14 +413,16 @@
 		}
 
 		static openNav() {
+			document.querySelector('.modal-container').classList.remove('hide');
 			let navToggleBtn = document.querySelector('.nav-toggle');
 			navToggleBtn.setAttribute('data-toggle', 'open');
 			navToggleBtn.src = '/icons/x.svg';
 			document.querySelector('.pop-out-menu').classList.add('active');
 		}
 
-		static closeNav() {
+		static closeNav(hideModal) {
 			let navToggleBtn = document.querySelector('.nav-toggle');
+			hideModal && document.querySelector('.modal-container').classList.add('hide');
 			navToggleBtn.setAttribute('data-toggle', 'closed');
 			navToggleBtn.src = '/icons/menu.svg';
 			document.querySelector('.pop-out-menu').classList.remove('active');
@@ -431,7 +433,7 @@
 			 * Nav toggle
 			 */
 			document.querySelector('.nav-toggle').addEventListener('click', function() {
-				this.getAttribute('data-toggle') === 'closed' ? Nav.openNav() : Nav.closeNav();
+				this.getAttribute('data-toggle') === 'closed' ? Nav.openNav() : Nav.closeNav(true);
 			});
 
 			/**
@@ -522,11 +524,6 @@
 					document.querySelector('.load-search-modal .saved-searches').classList.add('hide');
 					document.querySelector('.load-search-modal .no-saved-searches').classList.remove('hide');
 				}
-
-				// if (e.target.classList.contains('js-load-search')) {
-				// 	storageHelper.loadSavedSearch(e.target.getAttribute('data-search-id'));
-				// 	document.querySelector('.pop-out-menu').classList.remove('active');
-				// }
 			});
 			
 			/**
@@ -535,22 +532,11 @@
 			document.querySelectorAll('.cancel-modal').forEach(cancelModal => {
 				cancelModal.addEventListener('click', () => {
 					Nav.closeModal();
-				})
-			})
-			
-			/**
-			 * Toggle saved searches dropdown.
-			 */
-			// document.getElementById('load').addEventListener('click', function() {
-			// 	if (this.getAttribute('data-toggle-saved-search-list') === 'closed') {
-			// 		document.getElementById('saved-search-container').appendChild(storageHelper.getStoredSearchDropDown());
-			// 		this.setAttribute('data-toggle-saved-search-list', 'opened');
-			// 	}
-			// 	else {
-			// 		document.querySelector('#saved-search-container ul').remove();
-			// 		this.setAttribute('data-toggle-saved-search-list', 'closed');
-			// 	}
-			// });
+					document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
+						if (!modalDialogWindow.classList.contains('hide')) modalDialogWindow.classList.add('hide');
+					});
+				});
+			});
 		}
 	}
 })();

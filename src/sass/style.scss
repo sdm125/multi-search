@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 200;
+  z-index: 100;
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -41,14 +41,15 @@
   background: #eee;
 }
 
-.saved-search-list li {
-  cursor: pointer;
-  padding: 3px;
-}
-
-.saved-search-list li:hover {
-  background: #999;
-  color: white;
+.saved-search-list {
+  li {
+    cursor: pointer;
+    padding: 8px;
+    &:hover {
+      background: #999;
+      color: white;
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -72,7 +73,7 @@
 .nav-toggle {
   position: relative;
   height: 2.25rem;
-  z-index: 101;
+  z-index: 102;
   transition: transform 200ms;
 }
 
@@ -81,7 +82,7 @@
   height: 100vh;
   top: 0;
   padding: 20px;
-  z-index: 100;
+  z-index: 101;
   background: rgba(242, 242, 242, .95);
   transform: translateX(-250px);
   transition: transform 200ms;

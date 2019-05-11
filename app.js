@@ -48,6 +48,6 @@ app.post('/search', (req, res) => {
 	}).catch(err => console.log(err));
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.listen(3000, () => console.log('Listening on port 3000.'));
