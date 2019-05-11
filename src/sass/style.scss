@@ -64,6 +64,26 @@
   }
 }
 
+.saved-search-list-main {
+  list-style-type: none;
+  padding-left: 0;
+
+  li {
+    cursor: pointer;
+    padding: 8px;
+    
+    &:first-child {
+      cursor: inherit;
+    }
+    
+    &:hover:not(:first-child) {
+      background: #999 !important;
+      color: white;
+    }
+  }
+}
+
+
 /* Utilities */
 .hide {
   display: none !important;
@@ -235,4 +255,9 @@
 
 .form-control {
   height: calc(1.5em + .75rem + 4px);
+}
+
+.footer-copyright {
+  font-size: .5rem;
+  color: #999;
 }

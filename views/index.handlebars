@@ -48,6 +48,12 @@
 	</div>
 </form>
 
+{{#unless searchData.terms.length}}
+	<ul class="saved-search-list-main list-group mt-5">
+		<li class="list-group-item" ><h5 class="text-center">Saved Searches</h5></li>
+	</ul>
+{{/unless}}
+
 <div class="result-lists d-flex {{#if searchData.orientation}}flex-column{{else}}flex-row{{/if}}">
 	{{#each searchData.results}}
 		<div class="list-container" data-search="{{this.title}}">
