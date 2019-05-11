@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   Search.initSearchControls();
-  Nav.init();
-  
+  NavControls.init();
+
   /**
    * Initialize ResultList classes
    */

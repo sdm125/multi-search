@@ -1,4 +1,4 @@
-class Nav {
+class NavControls {
 	static showModal(type) {
 		let modalToShow = document.querySelector(`.${type}-search-modal`)
 		
@@ -49,15 +49,15 @@ class Nav {
 		 * Nav toggle
 		 */
 		document.querySelector('.nav-toggle').addEventListener('click', function() {
-			this.getAttribute('data-toggle') === 'closed' ? Nav.openNav() : Nav.closeNav(true);
+			this.getAttribute('data-toggle') === 'closed' ? NavControls.openNav() : NavControls.closeNav(true);
 		});
 
 		/**
 		 * Open save current search modal
 		 */
 		document.getElementById('open-save-modal').addEventListener('click', () => {
-			Nav.closeNav();
-			Nav.showModal('save');
+			NavControls.closeNav();
+			NavControls.showModal('save');
 		});
 
 		/**
@@ -67,7 +67,7 @@ class Nav {
 			var saveCurrentSearchName = this.previousElementSibling.previousElementSibling.value;
 			if (StorageHelper.validateSaveCurrentSearch(saveCurrentSearchName)) {
 				StorageHelper.saveCurrentSearches(saveCurrentSearchName);
-				Nav.closeModal();
+				NavControls.closeModal();
 			}
 			else {
 				document.querySelector('.save-search-modal .validation-msg').innerText = `There is already a search saved as "${saveCurrentSearchName}". Please try a different name.`;
@@ -78,8 +78,8 @@ class Nav {
 		 * Open update saved search modal. Select saved search from list. Sets update button data-update-search attribute for update-search-validate-modal.
 		 */
 		document.getElementById('open-update-modal').addEventListener('click', () => {
-			Nav.closeNav();
-			Nav.showModal('update');
+			NavControls.closeNav();
+			NavControls.showModal('update');
 
 			if (localStorage.length > 0) {
 				document.querySelector('.update-search-modal .saved-searches').classList.remove('hide');
@@ -109,7 +109,7 @@ class Nav {
 		 * Update a saved search with the current search. data-update-search-name attribute set by update-search-modal li on click.
 		 */
 		document.getElementById('update-saved-search').addEventListener('click', function(){
-			Nav.closeModal();
+			NavControls.closeModal();
 			StorageHelper.saveCurrentSearches(this.getAttribute('data-update-search-name'));
 		});
 
@@ -117,8 +117,8 @@ class Nav {
 		 * Load saved searches from local storage.
 		 */
 		document.getElementById('open-load-modal').addEventListener('click', function(e) {
-			Nav.closeNav();
-			Nav.showModal('load');
+			NavControls.closeNav();
+			NavControls.showModal('load');
 
 			if (localStorage.length > 0) {
 				document.querySelector('.load-search-modal .saved-searches').classList.remove('hide');
@@ -129,7 +129,7 @@ class Nav {
 
 					savedSearchListItem.addEventListener('click', function(){
 						StorageHelper.loadSavedSearch(savedSearch.name);
-						Nav.closeModal();
+						NavControls.closeModal();
 					});
 					
 					savedSearchListItem.innerText = savedSearch.name;
@@ -147,7 +147,7 @@ class Nav {
 		 */
 		document.querySelectorAll('.cancel-modal').forEach(cancelModal => {
 			cancelModal.addEventListener('click', () => {
-				Nav.closeModal();
+				NavControls.closeModal();
 				document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
 					if (!modalDialogWindow.classList.contains('hide')) modalDialogWindow.classList.add('hide');
 				});
