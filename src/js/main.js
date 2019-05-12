@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (window.location.pathname === '/' && StorageHelper.getAllSavedSearches().length > 0) {
     let savedSearchListItem;
-    
+
     StorageHelper.getAllSavedSearches().forEach(savedSearch => {
       savedSearchListItem = document.createElement('li');
       savedSearchListItem.classList.add('list-group-item');

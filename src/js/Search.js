@@ -24,10 +24,16 @@ class Search {
 			toggleOrientation.addEventListener('click', function() {
 				if (this.value === 'row') {
 					resultLists.classList.add('flex-row');
+					resultLists.classList.remove('ml-auto');
+					resultLists.classList.remove('mr-auto');
+					resultLists.classList.remove('col-lg-8');
 					resultLists.classList.remove('flex-column');
 				}
 				else if (this.value === 'column') {
 					resultLists.classList.add('flex-column');
+					resultLists.classList.add('col-lg-8');
+					resultLists.classList.add('ml-auto');
+					resultLists.classList.add('mr-auto');
 					resultLists.classList.remove('flex-row');
 				}
 			});

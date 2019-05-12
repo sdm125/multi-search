@@ -6,7 +6,7 @@
 
 <form action="/search" method="POST" class="mb-3">
 	<div class="row">
-		<div class="col-lg-6" style="margin: auto;">
+		<div class="col-lg-8" style="margin: auto;">
 			<div class="input-groups">
 				{{#unless searchData.terms.length}}
 					<div class="input-group mb-3">
@@ -49,33 +49,39 @@
 </form>
 
 {{#unless searchData.terms.length}}
-	<ul class="saved-search-list-main list-group mt-5">
-		<li class="list-group-item" ><h5 class="text-center">Saved Searches</h5></li>
-	</ul>
+<div class="row d-flex justify-content-center mt-4">
+	<div class="col-lg-8">
+		<ul class="saved-search-list-main list-group">
+			<li class="list-group-item" ><h5 class="text-center">Saved Searches</h5></li>
+		</ul>
+	</div>
+</div>
 {{/unless}}
 
-<div class="result-lists d-flex {{#if searchData.orientation}}flex-column{{else}}flex-row{{/if}}">
-	{{#each searchData.results}}
-		<div class="list-container" data-search="{{this.title}}">
-			<ul class="list-group result-list">
-				<li class="list-group-item d-flex justify-content-between align-items-center">
-					<h5 style="margin-bottom: 0;"><span class="js-toggle-search-results mr-1" data-collapse="show"><img src="/icons/chevron-down.svg"></span>{{this.title}}</h5>
-					<div>
-						<button class="js-remove-from-list float-right btn" data-search-input-val="{{this.title}}"><img src="/icons/trash-2.svg"></button>
-						<button class="js-move btn float-right"><img class="js-move" src="/icons/move.svg"></button>
-						<button class="js-toggle-descriptions float-right btn" data-descriptions="hide"><img src="/icons/toggle-left.svg"></button>
-						<a href="https://www.google.com/search?q={{this.urlencoded}}" target="blank"><button class="btn float-left mr-2"><img class="new-tab" src="/icons/new-tab.svg"></button></a>
-					</div>
-				</li>
-				{{#each this.links}}
-					<li class="list-group-item result-item">
-						<a href="{{this.link}}">{{this.title}}</a><br>
-						<p class="description">{{this.description}}</p>
+<div class="row">
+	<div class="result-lists d-flex {{#if searchData.orientation}}flex-column{{else}}flex-row{{/if}}">
+		{{#each searchData.results}}
+			<div class="list-container" data-search="{{this.title}}">
+				<ul class="list-group result-list">
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<h5 style="margin-bottom: 0;"><span class="js-toggle-search-results mr-1" data-collapse="show"><img src="/icons/chevron-down.svg"></span>{{this.title}}</h5>
+						<div>
+							<button class="js-remove-from-list float-right btn" data-search-input-val="{{this.title}}"><img src="/icons/trash-2.svg"></button>
+							<button class="js-move btn float-right"><img class="js-move" src="/icons/move.svg"></button>
+							<button class="js-toggle-descriptions float-right btn" data-descriptions="hide"><img src="/icons/toggle-left.svg"></button>
+							<a href="https://www.google.com/search?q={{this.urlencoded}}" target="blank"><button class="btn float-left mr-2"><img class="new-tab" src="/icons/new-tab.svg"></button></a>
+						</div>
 					</li>
-				{{/each}}
-			</ul>
-		</div>
-	{{/each}}
+					{{#each this.links}}
+						<li class="list-group-item result-item">
+							<a href="{{this.link}}">{{this.title}}</a><br>
+							<p class="description">{{this.description}}</p>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		{{/each}}
+	</div>
 </div>
 
 <div class="modal-container hide">
