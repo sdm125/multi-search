@@ -15,6 +15,7 @@ class NavControls {
 	}
 
 	static closeModal() {
+		console.log('here')
 		document.querySelector('.modal-container').classList.add('hide');
 		document.querySelector('.save-search-modal .validation-msg').innerText = '';
 		document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
@@ -25,12 +26,16 @@ class NavControls {
 
 		Array.from(document.querySelector('.load-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
 			saveSearchListItem.remove();
-		})
+		});
+
+		document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
+			if (!modalDialogWindow.classList.contains('hide')) modalDialogWindow.classList.add('hide');
+		});
 	}
 
 	static openNav() {
-		document.querySelector('.modal-container').classList.remove('hide');
 		let navToggleBtn = document.querySelector('.nav-toggle');
+		document.querySelector('.modal-container').classList.remove('hide');
 		navToggleBtn.setAttribute('data-toggle', 'open');
 		navToggleBtn.src = '/icons/x.svg';
 		document.querySelector('.pop-out-menu').classList.add('active');
@@ -38,7 +43,7 @@ class NavControls {
 
 	static closeNav(hideModal) {
 		let navToggleBtn = document.querySelector('.nav-toggle');
-		hideModal && document.querySelector('.modal-container').classList.add('hide');
+		if (hideModal) document.querySelector('.modal-container').classList.add('hide');
 		navToggleBtn.setAttribute('data-toggle', 'closed');
 		navToggleBtn.src = '/icons/menu.svg';
 		document.querySelector('.pop-out-menu').classList.remove('active');
@@ -50,6 +55,16 @@ class NavControls {
 		 */
 		document.querySelector('.nav-toggle').addEventListener('click', function() {
 			this.getAttribute('data-toggle') === 'closed' ? NavControls.openNav() : NavControls.closeNav(true);
+		});
+
+		/**
+		 * Close nav or modal when click modal container.
+		 */
+		document.querySelector('.modal-container').addEventListener('click', function(e) {
+			if (e.target.classList.contains('modal-container')) {
+				NavControls.closeNav();
+				NavControls.closeModal();
+			}
 		});
 
 		/**
