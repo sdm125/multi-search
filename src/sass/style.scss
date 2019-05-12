@@ -1,3 +1,11 @@
+// Colors
+$rowStripeColor: #eee;
+$rowHighlightColor: #e1f5fe;
+
+a {
+  color: #03A9F4;
+}
+
 /* Modal */
 .modal-container {
   position: fixed;
@@ -54,12 +62,11 @@
     padding: 8px;
     
     &:hover {
-      background: #999 !important;
-      color: white;
+      background: $rowHighlightColor !important;
     }
 
-    &:nth-child(odd) {
-      background: #eee;
+    &:nth-child(even) {
+      background: $rowStripeColor;
     }
   }
 }
@@ -75,10 +82,13 @@
     &:first-child {
       cursor: inherit;
     }
+
+    &:nth-child(even) {
+      background: $rowStripeColor;
+    }
     
     &:hover:not(:first-child) {
-      background: #999 !important;
-      color: white;
+      background: $rowHighlightColor !important;
     }
   }
 }
@@ -221,6 +231,16 @@
 
 .result-lists {
   overflow: scroll;
+}
+
+.result-item {
+ &:nth-child(even) {
+  background: $rowStripeColor;
+ }
+
+ &:hover {
+   background: $rowHighlightColor;
+ }
 }
 
 .list-container {

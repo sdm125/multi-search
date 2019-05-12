@@ -1,6 +1,6 @@
 class NavControls {
 	static showModal(type) {
-		let modalToShow = document.querySelector(`.${type}-search-modal`)
+		let modalToShow = document.querySelector(`.${type}-search-modal`);
 		
 		document.querySelector('.modal-container').classList.remove('hide');
 		document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
@@ -15,7 +15,6 @@ class NavControls {
 	}
 
 	static closeModal() {
-		console.log('here')
 		document.querySelector('.modal-container').classList.add('hide');
 		document.querySelector('.save-search-modal .validation-msg').innerText = '';
 		document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
