@@ -38,22 +38,54 @@ class StorageHelper {
 		let savedSearchListElm = document.createElement('ul');
 		let savedSearchListItemTitle = document.createElement('h5');
 		let savedSearchListItem = document.createElement('li');
+		let savedSearchListItemName;
+		let savedSearchListValuesElm;
+		let savedSearchListValueElm;
+		let expandSavedSearch;
 		
 		savedSearchListItemTitle.innerText = title;
 		savedSearchListItem.appendChild(savedSearchListItemTitle);
 		savedSearchListItem.classList += 'list-group-item text-center';
-		savedSearchListElm.appendChild(savedSearchListItem)
+		savedSearchListElm.appendChild(savedSearchListItem);
 
 		savedSearches.forEach(savedSearch => {
+			savedSearchListValuesElm = document.createElement('ul');
+			savedSearchListValuesElm.classList.add('list-group');
+			expandSavedSearch = document.createElement('img');
+			expandSavedSearch.src = 'icons/plus.svg';
+			expandSavedSearch.classList.add('expand-saved-search');
 			savedSearchListItem = document.createElement('li');
 			savedSearchListItem.classList.add('list-group-item');
-			savedSearchListItem.innerText = savedSearch.name;
+			savedSearchListItem.appendChild(expandSavedSearch);
+			savedSearchListItemName = document.createTextNode(savedSearch.name);
+			savedSearchListItem.appendChild(savedSearchListItemName);
 
-			savedSearchListItem.addEventListener('click', () => {
-				storageUtility(savedSearch.name);
-				if (closeModal)	ModalControls.closeModal();
+			savedSearchListValuesElm.classList.add('hide');
+
+			expandSavedSearch.addEventListener('click', function() {
+				if(this.nextElementSibling.classList.contains('hide')) {
+					this.nextElementSibling.classList.remove('hide');
+				}
+				else {
+					this.nextElementSibling.classList.add('hide');
+				}
+			});
+			
+			JSON.parse(savedSearch.values).forEach(searchValue => {
+				savedSearchListValueElm = document.createElement('li');
+				savedSearchListValueElm.classList.add('list-group-item');
+				savedSearchListValueElm.innerText = searchValue.value;
+				savedSearchListValuesElm.appendChild(savedSearchListValueElm);
 			});
 
+			savedSearchListItem.addEventListener('click', function(e) {
+				if (!e.target.classList.contains('expand-saved-search')) {
+					storageUtility(savedSearch.name);
+					if (closeModal)	ModalControls.closeModal();
+				}
+			});
+
+			savedSearchListItem.appendChild(savedSearchListValuesElm);
 			savedSearchListElm.appendChild(savedSearchListItem);
 		});
 
