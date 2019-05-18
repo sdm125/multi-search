@@ -19,16 +19,18 @@ class NavControls {
 		document.querySelector('.save-search-modal .validation-msg').innerText = '';
 		document.querySelector('.save-search-modal input[name="currentSearchName"]').value = '';
 		
-		Array.from(document.querySelector('.update-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
+		Array.from(document.querySelector('.update-search-modal .saved-searches').children).forEach(saveSearchListItem => {
 			saveSearchListItem.remove();
 		});
 
-		Array.from(document.querySelector('.load-search-modal .saved-search-list').children).forEach(saveSearchListItem => {
+		Array.from(document.querySelector('.load-search-modal .saved-searches').children).forEach(saveSearchListItem => {
 			saveSearchListItem.remove();
 		});
 
 		document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
-			if (!modalDialogWindow.classList.contains('hide')) modalDialogWindow.classList.add('hide');
+			if (!modalDialogWindow.classList.contains('hide')) {
+				modalDialogWindow.classList.add('hide');
+			}
 		});
 	}
 
@@ -99,19 +101,7 @@ class NavControls {
 				document.querySelector('.update-search-modal .saved-searches').classList.remove('hide');
 				document.querySelector('.update-search-modal .no-saved-searches').classList.add('hide');
 
-				StorageHelper.getAllSavedSearches().forEach(savedSearch => {
-					let savedSearchListItem = document.createElement('li');
-
-					savedSearchListItem.addEventListener('click', function(){
-						document.querySelector('.update-search-modal').classList.add('hide');
-						document.querySelector('.update-search-validate-modal').classList.remove('hide');
-						document.querySelector('.update-search-validate-modal #update-saved-search').setAttribute('data-update-search-name', this.innerText);
-						document.querySelector('.update-search-validate-modal h5').innerText = `Update saved search "${this.innerText}" with current search?`;
-					});
-					
-					savedSearchListItem.innerText = savedSearch.name;
-					document.querySelector('.saved-search-list').appendChild(savedSearchListItem);
-				});
+				document.querySelector('.update-search-modal .saved-searches').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.saveCurrentSearches, 'Update Saved Search'));
 			}
 			else {
 				document.querySelector('.update-search-modal .saved-searches').classList.add('hide');
@@ -138,17 +128,7 @@ class NavControls {
 				document.querySelector('.load-search-modal .saved-searches').classList.remove('hide');
 				document.querySelector('.load-search-modal .no-saved-searches').classList.add('hide');
 
-				StorageHelper.getAllSavedSearches().forEach(savedSearch => {
-					let savedSearchListItem = document.createElement('li');
-
-					savedSearchListItem.addEventListener('click', function(){
-						StorageHelper.loadSavedSearch(savedSearch.name);
-						NavControls.closeModal();
-					});
-					
-					savedSearchListItem.innerText = savedSearch.name;
-					document.querySelector('.load-search-modal .saved-search-list').appendChild(savedSearchListItem);
-				});
+				document.querySelector('.load-search-modal .saved-searches').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Load Saved Search'));
 			}
 			else {
 				document.querySelector('.load-search-modal .saved-searches').classList.add('hide');
@@ -162,9 +142,6 @@ class NavControls {
 		document.querySelectorAll('.cancel-modal').forEach(cancelModal => {
 			cancelModal.addEventListener('click', () => {
 				NavControls.closeModal();
-				document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
-					if (!modalDialogWindow.classList.contains('hide')) modalDialogWindow.classList.add('hide');
-				});
 			});
 		});
 	}

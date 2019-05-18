@@ -17,17 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (window.location.pathname === '/' && StorageHelper.getAllSavedSearches().length > 0) {
-    let savedSearchListItem;
-
-    StorageHelper.getAllSavedSearches().forEach(savedSearch => {
-      savedSearchListItem = document.createElement('li');
-      savedSearchListItem.classList.add('list-group-item');
-      savedSearchListItem.innerText = savedSearch.name;
-
-      savedSearchListItem.addEventListener('click', () => StorageHelper.loadSavedSearch(savedSearch.name));
-      
-      document.querySelector('.saved-search-list-main').appendChild(savedSearchListItem);
-    }); 
+    document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches'));
   }
 
   /**

@@ -49,17 +49,15 @@
 </form>
 
 {{#unless searchData.terms.length}}
-<div class="row d-flex justify-content-center mt-4">
-	<div class="col-lg-8">
-		<ul class="saved-search-list-main list-group">
-			<li class="list-group-item" ><h5 class="text-center">Saved Searches</h5></li>
-		</ul>
+	<div class="row d-flex justify-content-center mt-4">
+		<div class="col-lg-8">
+			<div class="saved-search-list-main"></div>
+		</div>
 	</div>
-</div>
 {{/unless}}
 
 <div class="row">
-	<div class="result-lists d-flex {{#if searchData.orientation}}flex-column{{else}}flex-row{{/if}}">
+	<div class="result-lists d-flex {{#if searchData.orientation}}flex-column mr-auto ml-auto col-lg-8{{else}}flex-row{{/if}}">
 		{{#each searchData.results}}
 			<div class="list-container" data-search="{{this.title}}">
 				<ul class="list-group result-list">
@@ -95,15 +93,12 @@
 	</div>
 
 	<div class="modal-dialog-window update-search-modal hide">
-		<h3>Update Saved Search</h3>
 		<div class="no-saved-searches">
 			<p>No searches have been saved yet. Try adding a few searches then click "Save Search" from the menu.</p>
 			<button class="cancel-modal btn btn-outline-secondary">Close</button>
 		</div>
-		<div class="saved-searches">
-			<ul class="saved-search-list"></ul>
-			<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
-		</div>
+		<div class="saved-searches"></div>
+		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
 	</div>
 
 	<div class="modal-dialog-window update-search-validate-modal hide">
@@ -113,14 +108,12 @@
 	</div>
 
 	<div class="modal-dialog-window load-search-modal hide">
-		<h3>Load Saved Search</h3>
+		{{!-- <h3>Load Saved Search</h3> --}}
 		<div class="no-saved-searches">
 			<p>No searches have been saved yet. Try adding a few searches then click "Save Search" from the menu.</p>
 			<button class="cancel-modal btn btn-outline-secondary">Close</button>
 		</div>
-		<div class="saved-searches">
-			<ul class="saved-search-list"></ul>
-			<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
-		</div>
+		<div class="saved-searches"></div>
+		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
 	</div>
 </div>
