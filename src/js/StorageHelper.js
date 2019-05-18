@@ -8,14 +8,22 @@ class StorageHelper {
 				
 			localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
 	}
+	/**
+	 * Update a saved search with the current search.
+	 */
+	static updateSavedSearch(name) {
+		document.querySelector('.update-search-modal').classList.add('hide');
+		document.querySelector('.update-search-validate-modal h5').innerText = `Update ${name} with current search?`;
+		document.querySelector('.update-search-validate-modal').classList.remove('hide');
 
+		document.getElementById('update-saved-search').addEventListener('click', function(){
+			ModalControls.closeModal();
+			StorageHelper.saveCurrentSearches(name);
+		});
+	}
+	 
 	static validateSaveCurrentSearch(name) {
-		if (localStorage.getItem(name) === null) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return localStorage.getItem(name) === null ? true : false;
 	}
 
 	static getAllSavedSearches() {
@@ -25,7 +33,7 @@ class StorageHelper {
 		});
 	}
 
-	static getAllSavedSearchesListElm(storageUtility, title) {
+	static getAllSavedSearchesListElm(storageUtility, title, closeModal) {
 		let savedSearches = StorageHelper.getAllSavedSearches();
 		let savedSearchListElm = document.createElement('ul');
 		let savedSearchListItemTitle = document.createElement('h5');
@@ -43,9 +51,7 @@ class StorageHelper {
 
 			savedSearchListItem.addEventListener('click', () => {
 				storageUtility(savedSearch.name);
-				if (!document.querySelector('.modal-container').classList.contains('hide')) {
-					NavControls.closeModal();
-				}
+				if (closeModal)	ModalControls.closeModal();
 			});
 
 			savedSearchListElm.appendChild(savedSearchListItem);

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   Search.initSearchControls();
   NavControls.init();
+  ModalControls.init();
 
   /**
    * Initialize ResultList classes
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (window.location.pathname === '/' && StorageHelper.getAllSavedSearches().length > 0) {
-    document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches'));
+    document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
   }
 
   /**
