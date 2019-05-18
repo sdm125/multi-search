@@ -149,8 +149,17 @@ a {
   }
 }
 
-.search {
+.single-search {
+  border-top-right-radius: .25rem !important;
+  border-bottom-right-radius: .25rem !important;
+}
+
+.multi-search {
   border-right: 0;
+}
+
+.multi-search-controls {
+  display: inline;
 }
 
 .combine-btn {

@@ -6,6 +6,7 @@ class InputGroup {
 		this._combineListElm = this._combineListContainer.querySelector('ul');
 		Search.addSearchValue({name: this._searchInput.name, value: this.value});
 		InputGroup.inputGroups.push(this);
+		this.checkForSingleInputGroup();
 		this.addEventListeners();
 	}
 
@@ -72,12 +73,20 @@ class InputGroup {
 
 		inputGroupElm.classList += 'input-group mb-3';
 		inputGroupElm.setAttribute('data-remove', `term${newTermIndex}`);
-		inputGroupAppend.classList += 'input-group-append';
+		inputGroupAppend.classList.add('input-group-append');
+
+		if (InputGroup.inputGroups.length < 1) {
+			newTermInput.classList.add('single-search');
+			inputGroupAppend.classList.add('hide');
+		}
+		else {
+			newTermInput.classList.add('multi-search');
+		}
 
 		newTermInput.type = 'text';
 		newTermInput.setAttribute('placeholder', 'Search');
 		newTermInput.name = newTermName;
-		newTermInput.classList += 'form-control input-group-lg search';
+		newTermInput.classList += ' form-control input-group-lg search';
 
 		combine.type = 'button';
 		combine.classList += 'btn btn-outline-secondary js-combine combine-btn';
@@ -104,6 +113,29 @@ class InputGroup {
 		inputGroupElm.appendChild(inputGroupAppend);
 
 		return inputGroupElm;
+	}
+
+	showMultiSearchControls() {
+		this.elm.querySelector('.input-group-append').classList.remove('hide');
+		this._searchInput.classList.add('single-search');
+		this._searchInput.classList.add('multi-search');
+	}
+
+	hideMultiSearchControls() {
+		this.elm.querySelector('.input-group-append').classList.add('hide');
+		this._searchInput.classList.remove('multi-search');
+		this._searchInput.classList.add('single-search');
+	}
+
+	checkForSingleInputGroup() {
+		if (InputGroup.inputGroups.length === 1) {
+			InputGroup.inputGroups[0].hideMultiSearchControls();
+			document.querySelector('.multi-search-controls').classList.add('hide');
+		}
+		else {
+			InputGroup.inputGroups[0].showMultiSearchControls();
+			document.querySelector('.multi-search-controls').classList.remove('hide');
+		}
 	}
 
 	addEventListeners() {
