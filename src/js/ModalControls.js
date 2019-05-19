@@ -1,5 +1,7 @@
 class ModalControls {
   static showModal(type) {
+		ModalControls.hideAllModals();
+
 		let modalToShow = document.querySelector(`.${type}-search-modal`);
 		
 		document.querySelector('.modal-container').classList.remove('hide');
@@ -26,13 +28,17 @@ class ModalControls {
 		Array.from(document.querySelector('.load-search-modal .saved-searches').children).forEach(saveSearchListItem => {
 			saveSearchListItem.remove();
 		});
-
+		
+		ModalControls.hideAllModals();
+	}
+	
+	static hideAllModals() {
 		document.querySelectorAll('.modal-dialog-window').forEach(modalDialogWindow => {
 			if (!modalDialogWindow.classList.contains('hide')) {
 				modalDialogWindow.classList.add('hide');
 			}
 		});
-  }
+	}
   
   static init() {
     /**
@@ -57,7 +63,7 @@ class ModalControls {
 		 * Save current search to local storage
 		 */
 		document.getElementById('save-current-search').addEventListener('click', function() {
-			var saveCurrentSearchName = this.previousElementSibling.previousElementSibling.value;
+			let saveCurrentSearchName = this.previousElementSibling.previousElementSibling.value;
 			if (StorageHelper.validateSaveCurrentSearch(saveCurrentSearchName)) {
 				StorageHelper.saveCurrentSearches(saveCurrentSearchName);
 				ModalControls.closeModal();

@@ -42,6 +42,7 @@ class StorageHelper {
 		let savedSearchListValuesElm;
 		let savedSearchListValueElm;
 		let expandSavedSearch;
+		let deleteSavedSearch;
 		
 		savedSearchListItemTitle.innerText = title;
 		savedSearchListItem.appendChild(savedSearchListItemTitle);
@@ -51,24 +52,51 @@ class StorageHelper {
 		savedSearches.forEach(savedSearch => {
 			savedSearchListValuesElm = document.createElement('ul');
 			savedSearchListValuesElm.classList.add('list-group');
+
 			expandSavedSearch = document.createElement('img');
 			expandSavedSearch.src = 'icons/plus.svg';
 			expandSavedSearch.classList.add('expand-saved-search');
+
+			deleteSavedSearch = document.createElement('img');
+			deleteSavedSearch.src = 'icons/trash-2.svg';
+			deleteSavedSearch.classList += 'float-right open-delete-modal';
+			deleteSavedSearch.setAttribute('data-search-name', savedSearch.name);
+
 			savedSearchListItem = document.createElement('li');
 			savedSearchListItem.classList.add('list-group-item');
+			savedSearchListItem.classList.add('clearfix');
 			savedSearchListItem.appendChild(expandSavedSearch);
 			savedSearchListItemName = document.createTextNode(savedSearch.name);
 			savedSearchListItem.appendChild(savedSearchListItemName);
+			savedSearchListItem.appendChild(deleteSavedSearch);
 
 			savedSearchListValuesElm.classList.add('hide');
 
 			expandSavedSearch.addEventListener('click', function() {
-				if(this.nextElementSibling.classList.contains('hide')) {
-					this.nextElementSibling.classList.remove('hide');
+				if(this.nextElementSibling.nextElementSibling.classList.contains('hide')) {
+					this.nextElementSibling.nextElementSibling.classList.remove('hide');
 				}
 				else {
-					this.nextElementSibling.classList.add('hide');
+					this.nextElementSibling.nextElementSibling.classList.add('hide');
 				}
+			});
+
+			deleteSavedSearch.addEventListener('click', function() {
+				ModalControls.showModal('delete');
+				document.querySelector('.delete-search-modal h5').innerText = `Are you sure you want to delete ${savedSearch.name}?`;
+				document.querySelector('#delete-saved-search').addEventListener('click', () => {
+					StorageHelper.deleteSavedSearch(savedSearch.name);
+					ModalControls.closeModal();
+					this.closest('li').remove();
+
+					if (document.querySelector('.saved-search-list-main')) {
+						document.querySelectorAll('.saved-search-list-main ul li').forEach(savedSearchListItem => {
+							if (savedSearchListItem.innerText === savedSearch.name) {
+								savedSearchListItem.remove();
+							}
+						});
+					}
+				});
 			});
 			
 			JSON.parse(savedSearch.values).forEach(searchValue => {
@@ -79,9 +107,9 @@ class StorageHelper {
 			});
 
 			savedSearchListItem.addEventListener('click', function(e) {
-				if (!e.target.classList.contains('expand-saved-search')) {
+				if (!e.target.classList.contains('expand-saved-search') && !e.target.classList.contains('open-delete-modal')) {
 					storageUtility(savedSearch.name);
-					if (closeModal)	ModalControls.closeModal();
+					if (closeModal) ModalControls.closeModal();
 				}
 			});
 
@@ -102,6 +130,10 @@ class StorageHelper {
 		});
 
 		Search.updateCombineDropDown();
+	}
+
+	static deleteSavedSearch(name) {
+		localStorage.removeItem(name);
 	}
 
 	static getStoredSearchDropDown() {

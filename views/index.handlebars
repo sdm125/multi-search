@@ -47,7 +47,7 @@
 			<button type="button" id="add-input-group" class="btn btn-outline-dark">+ <img src="/icons/search.svg"></button>
 			<div class="multi-search-controls">
 				<button type="button" id="reset" class="btn btn-outline-dark">Reset</button>
-				<label><input  type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
+				<label><input type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
 				<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
 			</div>	
 		</div>
@@ -120,6 +120,12 @@
 			<button class="cancel-modal btn btn-outline-secondary">Close</button>
 		</div>
 		<div class="saved-searches"></div>
+		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
+	</div>
+
+	<div class="modal-dialog-window delete-search-modal hide">
+		<h5></h5>
+		<button id="delete-saved-search" class="btn btn-outline-secondary">Delete</button>
 		<button class="cancel-modal btn btn-outline-secondary">Cancel</button>
 	</div>
 </div>

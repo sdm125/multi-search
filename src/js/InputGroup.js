@@ -27,6 +27,10 @@ class InputGroup {
 		this._searchInput.name = name;
 	}
 
+	getName() {
+		return this._searchInput.name;
+	}
+
 	combine(event) {
 		if (event.target.classList.contains('combine-item')) {
 			this._searchInput.value = `${this.value} ${event.target.getAttribute('data-search-term')}`;
