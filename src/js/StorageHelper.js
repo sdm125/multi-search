@@ -16,9 +16,10 @@ class StorageHelper {
 		document.querySelector('.update-search-validate-modal h5').innerText = `Update ${name} with current search?`;
 		document.querySelector('.update-search-validate-modal').classList.remove('hide');
 
+
 		document.getElementById('update-saved-search').addEventListener('click', function(){
 			ModalControls.closeModal();
-			StorageHelper.saveCurrentSearches(name);
+			this.saveCurrentSearches(name);
 		});
 	}
 	 
@@ -28,13 +29,13 @@ class StorageHelper {
 
 	static getAllSavedSearches() {
 		let searchNames = Object.keys(localStorage);
-		return searchNames.map(name => {
+		return searchNames.filter(name => name !== 'settings').map(name => {
 			return {name: name,  values: localStorage.getItem(name)};
 		});
 	}
 
 	static getAllSavedSearchesListElm(storageUtility, title, closeModal) {
-		let savedSearches = StorageHelper.getAllSavedSearches();
+		let savedSearches = this.getAllSavedSearches();
 		let savedSearchListElm = document.createElement('ul');
 		let savedSearchListItemTitle = document.createElement('h5');
 		let savedSearchListItem = document.createElement('li');
@@ -85,7 +86,7 @@ class StorageHelper {
 				ModalControls.showModal('delete');
 				document.querySelector('.delete-search-modal h5').innerText = `Are you sure you want to delete ${savedSearch.name}?`;
 				document.querySelector('#delete-saved-search').addEventListener('click', () => {
-					StorageHelper.deleteSavedSearch(savedSearch.name);
+					this.deleteSavedSearch(savedSearch.name);
 					ModalControls.closeModal();
 					this.closest('li').remove();
 
@@ -136,12 +137,30 @@ class StorageHelper {
 		localStorage.removeItem(name);
 	}
 
+	static updateSetting(update) {
+		let key = Object.keys(update)[0];
+		let value = Object.values(update)[0];
+		let settings = JSON.parse(localStorage.getItem('settings'));
+		settings[key] = value;
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+
+	static initSettings() {
+		if (!localStorage.getItem('settings')) {
+			localStorage.setItem('settings', JSON.stringify({
+				showDescriptions: 0,
+				collapseResults: 0,
+				darkMode: 0
+			}));
+		}
+	}
+
 	static getStoredSearchDropDown() {
 		let li;
 		let storedSearchDropDownList = document.createElement('ul');
 
 		for (let search in localStorage) {
-			if (localStorage.hasOwnProperty(search)) {
+			if (localStorage.hasOwnProperty(search) && search != 'settings') {
 				li = document.createElement('li');
 				li.setAttribute('data-search-id', search);
 				li.classList.add('saved-search-item');
@@ -153,5 +172,13 @@ class StorageHelper {
 		}
 
 		return storedSearchDropDownList;
+	}
+
+	static deleteAllSavedSearches() {
+		for (let search in localStorage) {
+			if (localStorage.hasOwnProperty(search) && search != 'settings') {
+				localStorage.removeItem(search)
+			}
+		}
 	}
 }

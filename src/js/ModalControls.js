@@ -1,6 +1,6 @@
 class ModalControls {
   static showModal(type) {
-		ModalControls.hideAllModals();
+		this.hideAllModals();
 
 		let modalToShow = document.querySelector(`.${type}-search-modal`);
 		
@@ -29,7 +29,7 @@ class ModalControls {
 			saveSearchListItem.remove();
 		});
 		
-		ModalControls.hideAllModals();
+		this.hideAllModals();
 	}
 	
 	static hideAllModals() {
@@ -56,7 +56,7 @@ class ModalControls {
 		 */
 		document.getElementById('open-save-modal').addEventListener('click', () => {
 			NavControls.closeNav();
-			ModalControls.showModal('save');
+			this.showModal('save');
 		});
 
 		/**
@@ -78,7 +78,7 @@ class ModalControls {
 		 */
 		document.getElementById('open-update-modal').addEventListener('click', () => {
 			NavControls.closeNav();
-			ModalControls.showModal('update');
+			this.showModal('update');
 
 			if (localStorage.length > 0) {
 				document.querySelector('.update-search-modal .saved-searches').classList.remove('hide');
@@ -110,13 +110,49 @@ class ModalControls {
 				document.querySelector('.load-search-modal .no-saved-searches').classList.remove('hide');
 			}
 		});
+
+		document.getElementById('open-settings-modal').addEventListener('click', function() {
+			NavControls.closeNav();
+			ModalControls.showModal('settings');
+		});
+
+		document.querySelectorAll('.js-settings-btn').forEach(settingsBtn => {
+			let settingUpdate = {};
+			settingsBtn.addEventListener('click', () => {
+				if (settingsBtn.nextElementSibling) {
+					settingUpdate[settingsBtn.getAttribute('data-setting')] = settingsBtn.getAttribute('data-value');
+					StorageHelper.updateSetting(settingUpdate);
+					
+					settingsBtn.nextElementSibling.classList.remove('hide');
+					settingsBtn.classList.add('hide');
+				}
+				else if (settingsBtn.previousElementSibling) {
+					settingUpdate[settingsBtn.getAttribute('data-setting')] = settingsBtn.getAttribute('data-value');
+					StorageHelper.updateSetting(settingUpdate);
+					
+					settingsBtn.previousElementSibling.classList.remove('hide');
+					settingsBtn.classList.add('hide');
+				}
+			});
+		});
+		/**
+			* Delete all searches from settings modal
+			*/
+		document.querySelector('.js-delete-all-searches').addEventListener('click', () => {
+			ModalControls.showModal('delete');
+			document.querySelector('.delete-search-modal h5').innerText = `Are you sure you want to delete all saved searches?`;
+			document.querySelector('#delete-saved-search').addEventListener('click', () => {
+				StorageHelper.deleteAllSavedSearches();
+				this.closeModal();
+			});
+		});
 		
 		/**
 		 * Cancel/close modal dialog window
 		 */
 		document.querySelectorAll('.cancel-modal').forEach(cancelModal => {
 			cancelModal.addEventListener('click', () => {
-				ModalControls.closeModal();
+				this.closeModal();
 			});
 		});
   }

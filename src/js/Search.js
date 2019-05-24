@@ -5,8 +5,8 @@ class Search {
 		/**
 		 * Triggers createInputGroup fn when "Add" button is clicked.
 		 */
-		document.getElementById('add-input-group').addEventListener('click', function() {
-			Search.addInputGroup();
+		document.getElementById('add-input-group').addEventListener('click', () => {
+			this.addInputGroup();
 		});
 
 		/**
@@ -14,7 +14,7 @@ class Search {
 		 */
 		document.getElementById('reset').addEventListener('click', () => {
 			InputGroup.inputGroups.forEach(ip => ip.remove());
-			Search.addInputGroup();
+			this.addInputGroup();
 		});
 
 		/**
@@ -48,7 +48,7 @@ class Search {
 	};
 
 	static getSearchValue(val) {
-		return Search.searchValues.filter(sv => sv.name === val);
+		return this.searchValues.filter(sv => sv.name === val);
 	}
 
 	static addSearchValue(nameVal) {
