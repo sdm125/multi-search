@@ -18,9 +18,9 @@ class StorageHelper {
 		document.querySelector('.update-search-validate-modal').classList.remove('hide');
 
 
-		document.getElementById('update-saved-search').addEventListener('click', function(){
+		document.getElementById('update-saved-search').addEventListener('click', () => {
 			ModalControls.closeModal();
-			this.saveCurrentSearches(name);
+			StorageHelper.saveCurrentSearches(name);
 		});
 	}
 	 
