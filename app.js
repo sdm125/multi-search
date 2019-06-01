@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
 
 app.post('/search', (req, res) => {
 	const searchPromises = [];
-	let search = {};
 	let searchData = {
 		terms: [],
 		results: null,

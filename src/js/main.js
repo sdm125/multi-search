@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Search.initSearchControls();
   NavControls.init();
   ModalControls.init();
-  StorageHelper.initSettings();
+  Settings.init();
 
   /**
    * Initialize ResultList classes

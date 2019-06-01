@@ -114,6 +114,19 @@ class ModalControls {
 		document.getElementById('open-settings-modal').addEventListener('click', function() {
 			NavControls.closeNav();
 			ModalControls.showModal('settings');
+			let settings = Settings.get();
+			for(let setting in settings) {
+				document.querySelectorAll(`img[data-setting="${setting}"]`).forEach(settingBtn => {
+					if (settingBtn.getAttribute('data-value') === settings[setting]) {
+						if (settingBtn.classList.contains('hide')) {
+							settingBtn.classList.remove('hide');
+						}
+					}
+					else {
+						settingBtn.classList.add('hide');
+					}
+				})
+			}
 		});
 
 		document.querySelectorAll('.js-settings-btn').forEach(settingsBtn => {
@@ -121,14 +134,14 @@ class ModalControls {
 			settingsBtn.addEventListener('click', () => {
 				if (settingsBtn.nextElementSibling) {
 					settingUpdate[settingsBtn.getAttribute('data-setting')] = settingsBtn.getAttribute('data-value');
-					StorageHelper.updateSetting(settingUpdate);
+					Settings.update(settingUpdate);
 					
 					settingsBtn.nextElementSibling.classList.remove('hide');
 					settingsBtn.classList.add('hide');
 				}
 				else if (settingsBtn.previousElementSibling) {
 					settingUpdate[settingsBtn.getAttribute('data-setting')] = settingsBtn.getAttribute('data-value');
-					StorageHelper.updateSetting(settingUpdate);
+					Settings.update(settingUpdate);
 					
 					settingsBtn.previousElementSibling.classList.remove('hide');
 					settingsBtn.classList.add('hide');
