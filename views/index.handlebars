@@ -65,10 +65,10 @@
 <div class="row">
 	<div class="result-lists d-flex {{#if searchData.orientation}}flex-column mr-auto ml-auto col-lg-8{{else}}flex-row{{/if}}">
 		{{#each searchData.results}}
-			<div class="list-container" data-search="{{this.title}}">
+			<div class="list-container" data-search="{{this.search}}">
 				<ul class="list-group result-list">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5 style="margin-bottom: 0;"><span class="js-toggle-search-results mr-1" data-collapse="show"><img src="/icons/chevron-down.svg"></span>{{this.title}}</h5>
+						<h5 style="margin-bottom: 0;"><span class="js-toggle-search-results mr-1" data-collapse="show"><img src="/icons/chevron-down.svg"></span>{{this.search}}</h5>
 						<div>
 							<button class="js-remove-from-list float-right btn" data-search-input-val="{{this.title}}"><img src="/icons/trash-2.svg"></button>
 							<button class="js-move btn float-right"><img class="js-move" src="/icons/move.svg"></button>
@@ -78,7 +78,7 @@
 					</li>
 					{{#each this.links}}
 						<li class="list-group-item result-item">
-							<a href="{{this.link}}">{{this.title}}</a><br>
+							<a href="{{this.url}}">{{this.title}}</a><br>
 							<p class="description">{{this.description}}</p>
 						</li>
 					{{/each}}

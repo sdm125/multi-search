@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
+const env = require('dotenv').config();
 const path = require('path');
 const exphbs = require('express-handlebars');
-const google = require('google');
+const osmosis = require('osmosis');
 
 app.engine('handlebars', exphbs({	defaultLayout: 'main'}));
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.post('/search', (req, res) => {
 	const searchPromises = [];
+	let search = {};
 	let searchData = {
 		terms: [],
 		results: null,
@@ -28,8 +30,21 @@ app.post('/search', (req, res) => {
 		if (formElm !== 'orientation') {
 			searchData.terms.push(req.body[formElm]);
 			searchPromises.push(new Promise((resolve, reject) => {
-				google(req.body[formElm], (err, results) => {
-					err ? reject(err) : resolve(results);
+				osmosis.get(`${process.env.SEARCH}${req.body[formElm]}`)
+				.set({'search': 'input["title=search"]@value',
+							'links': {
+								'titles': [process.env.TITLE_SEL],
+								'urls': [process.env.URL_SEL],
+								'descriptions': [process.env.DESCRIPTION_SEL]	
+							}
+						})
+				.data(searchData => {
+					searchData.links = searchData.links.titles.map((search, index) => {
+						return {title: searchData.links.titles[index], 
+										url: searchData.links.urls[index], 
+										description: searchData.links.descriptions[index]};
+					});	
+					resolve(searchData);
 				});
 			}));
 		}
@@ -39,15 +54,11 @@ app.post('/search', (req, res) => {
 	}
 
 	Promise.all(searchPromises).then(data => {
-		const results = data.map(list => {
-			list.links = list.links.filter(searchResult => searchResult.link !== null);
-			return {title: list.query.toUpperCase(), links: list.links, urlencoded: encodeURIComponent(list.query)};
-		});
-		searchData.results = results;
-		res.render('index', {searchData});
+		searchData.results = data;
+		res.render('index', {searchData});	
 	}).catch(err => console.log(err));
 });
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.listen(3000, () => console.log('Listening on port 3000.'));
+app.listen(3000, () => 'Listening on port 3000');

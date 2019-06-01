@@ -247,6 +247,12 @@ a {
   width: 100%;
   min-width: 400px;
 
+  .list-group-item {
+    h5 {
+      text-transform: uppercase;
+    }
+  }
+
   @media screen and (max-width: 400px) {
     min-width: 90vw;
   }

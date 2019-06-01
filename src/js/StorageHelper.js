@@ -8,6 +8,7 @@ class StorageHelper {
 				
 			localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
 	}
+
 	/**
 	 * Update a saved search with the current search.
 	 */
@@ -86,7 +87,7 @@ class StorageHelper {
 				ModalControls.showModal('delete');
 				document.querySelector('.delete-search-modal h5').innerText = `Are you sure you want to delete ${savedSearch.name}?`;
 				document.querySelector('#delete-saved-search').addEventListener('click', () => {
-					this.deleteSavedSearch(savedSearch.name);
+					StorageHelper.deleteSavedSearch(savedSearch.name);
 					ModalControls.closeModal();
 					this.closest('li').remove();
 
