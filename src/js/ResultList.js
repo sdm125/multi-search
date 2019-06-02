@@ -5,9 +5,7 @@ class ResultList {
 		this._toggleDescriptionsBtn = this._elm.querySelector('.js-toggle-descriptions');
 		this._removeBtn = this._elm.querySelector('.js-remove-from-list');
 		this.addEventListeners();
-		if (parseInt(Settings.get()['showDescriptions']) === 1) {
-			this.showDescriptions();
-		}
+		this.checkSettings();
 	}
 
 	/**
@@ -15,19 +13,27 @@ class ResultList {
 	 */
 	toggleSearchResults() {
 		if (this._toggleSearchResultsBtn.getAttribute('data-collapse') === 'show') {
-			this._toggleSearchResultsBtn.setAttribute('data-collapse', 'hide');
-			this._toggleSearchResultsBtn.innerHTML = '<img src="/icons/chevron-up.svg">';
-			this._elm.querySelectorAll('.result-item').forEach(el => {
-				el.style.display = "none";
-			});
+			this.hideSearchResults();
 		}
 		else {
-			this._toggleSearchResultsBtn.setAttribute('data-collapse', 'show');
-			this._toggleSearchResultsBtn.innerHTML = '<img src="/icons/chevron-down.svg">';
-			this._elm.querySelectorAll('.result-item').forEach(el => {
-				el.style.display = "block";
-			});
+			this.showSearchResults();
 		}
+	}
+
+	showSearchResults() {
+		this._toggleSearchResultsBtn.setAttribute('data-collapse', 'show');
+		this._toggleSearchResultsBtn.innerHTML = '<img src="/icons/chevron-down.svg">';
+		this._elm.querySelectorAll('.result-item').forEach(el => {
+			el.style.display = "block";
+		});
+	}
+
+	hideSearchResults() {
+		this._toggleSearchResultsBtn.setAttribute('data-collapse', 'hide');
+		this._toggleSearchResultsBtn.innerHTML = '<img src="/icons/chevron-up.svg">';
+		this._elm.querySelectorAll('.result-item').forEach(el => {
+			el.style.display = "none";
+		});
 	}
 
 	/**
@@ -60,6 +66,19 @@ class ResultList {
 
 	remove() {
 		this._elm.parentNode.removeChild(this._elm);
+	}
+
+	checkSettings() {
+		let settings = Settings.get();
+		
+		for (let setting in settings) {
+			if (setting === 'showDescriptions') {
+				parseInt(settings[setting]) === 1 ? this.showDescriptions() : this.hideDescriptions();
+			}
+			else if (setting === 'collapseResults') {
+				parseInt(settings[setting]) === 1 ? this.showSearchResults() : this.hideSearchResults();
+			}
+		}
 	}
 
 	addEventListeners() {
