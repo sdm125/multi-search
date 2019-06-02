@@ -5,6 +5,9 @@ class ResultList {
 		this._toggleDescriptionsBtn = this._elm.querySelector('.js-toggle-descriptions');
 		this._removeBtn = this._elm.querySelector('.js-remove-from-list');
 		this.addEventListeners();
+		if (Settings.get()['showDescriptions'] === 1) {
+			this.toggleDescriptions();
+		}
 	}
 
 	/**

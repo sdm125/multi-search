@@ -244,7 +244,7 @@ a {
   margin: 5px;
   transition: width 200ms linear;
   display: flex;
-  width: 100%;
+  max-width: 100%;
   min-width: 400px;
 
   .list-group-item {
