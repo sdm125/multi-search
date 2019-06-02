@@ -116,16 +116,16 @@ class ModalControls {
 			ModalControls.showModal('settings');
 			let settings = Settings.get();
 			for(let setting in settings) {
-				console.log(settings[setting])
 				document.querySelectorAll(`img[data-setting="${setting}"]`).forEach(settingBtn => {
-					if (settingBtn.getAttribute('data-value') === settings[setting]) {
-						settingBtn.classList.add('hide');
-					}
-					else {
+					if (settingBtn.getAttribute('data-value') !== settings[setting]) {
 						if (settingBtn.classList.contains('hide')) {
 							settingBtn.classList.remove('hide');
 						}
-						
+					}
+					else {
+						if (!settingBtn.classList.contains('hide')) {
+							settingBtn.classList.add('hide');
+						}
 					}
 				})
 			}
@@ -148,7 +148,6 @@ class ModalControls {
 					settingsBtn.previousElementSibling.classList.remove('hide');
 					settingsBtn.classList.add('hide');
 				}
-				console.log(Settings.get())
 			});
 		});
 		/**

@@ -5,8 +5,8 @@ class ResultList {
 		this._toggleDescriptionsBtn = this._elm.querySelector('.js-toggle-descriptions');
 		this._removeBtn = this._elm.querySelector('.js-remove-from-list');
 		this.addEventListeners();
-		if (Settings.get()['showDescriptions'] === 1) {
-			this.toggleDescriptions();
+		if (parseInt(Settings.get()['showDescriptions']) === 1) {
+			this.showDescriptions();
 		}
 	}
 
@@ -35,19 +35,27 @@ class ResultList {
 	 */
 	toggleDescriptions() {
 		if (this._toggleDescriptionsBtn.getAttribute('data-descriptions') === 'hide') {
-			this._toggleDescriptionsBtn.setAttribute('data-descriptions', 'show');
-			this._toggleDescriptionsBtn.innerHTML = '<img src="/icons/toggle-right.svg">';
-			this._elm.querySelectorAll('.description').forEach(function(description) {
-				description.style.display = 'block';
-			});
+			this.showDescriptions();
 		}
 		else {
-			this._toggleDescriptionsBtn.setAttribute('data-descriptions', 'hide');
-			this._toggleDescriptionsBtn.innerHTML = '<img src="/icons/toggle-left.svg">';
-			this._elm.querySelectorAll('.description').forEach(function(description) {
-				description.style.display = 'none';
-			});
+			this.hideDescriptions();
 		}
+	}
+
+	showDescriptions() {
+		this._toggleDescriptionsBtn.setAttribute('data-descriptions', 'show');
+		this._toggleDescriptionsBtn.innerHTML = '<img src="/icons/toggle-right.svg">';
+		this._elm.querySelectorAll('.description').forEach(function(description) {
+			description.style.display = 'block';
+		});
+	}
+
+	hideDescriptions() {
+		this._toggleDescriptionsBtn.setAttribute('data-descriptions', 'hide');
+		this._toggleDescriptionsBtn.innerHTML = '<img src="/icons/toggle-left.svg">';
+		this._elm.querySelectorAll('.description').forEach(function(description) {
+			description.style.display = 'none';
+		});
 	}
 
 	remove() {
