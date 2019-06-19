@@ -45,7 +45,16 @@ class InputGroup {
 	}
 
 	toggleCombineDropDown() {
-		this._combineListElm.style.display = this._combineListElm.style.display === 'none' ? 'block' : 'none';
+		this._combineListElm.style.display === 'none' ? this.showCombineDropDown() : this.hideCombineDropDown();
+	}
+
+	showCombineDropDown() {
+		InputGroup.inputGroups.forEach(ig => ig.hideCombineDropDown());
+		this._combineListElm.style.display = 'block';
+	}
+
+	hideCombineDropDown() {
+		this._combineListElm.style.display = 'none';
 	}
 
 	updateCombineDropDown(updatedCombineDropDownList) {
@@ -143,14 +152,15 @@ class InputGroup {
 	}
 
 	addEventListeners() {
-		const thisInput = this;
+		const thisInput = this;	
 
 		this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
 			this.remove();
 		});
 
-		this._elm.querySelector('.js-combine').addEventListener('click', () => {
-			this.toggleCombineDropDown();
+		this._elm.querySelector('.js-combine').addEventListener('click', function(event) {
+			event.stopPropagation();
+			thisInput.toggleCombineDropDown();
 		});
 
 		this._searchInput.addEventListener('keyup', () => {

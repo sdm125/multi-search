@@ -81,6 +81,8 @@ class Search {
 	static getCombineDropDown() {
 		let li;
 		let combineDropDownList = document.createElement('ul');
+		combineDropDownList.classList.add('combine-list');
+		combineDropDownList.style.display = 'none';
 		Search.searchValues.forEach(nameVal => {
 			if (nameVal.value) {
 				li = document.createElement('li');

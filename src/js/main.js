@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Hide combine dropdown if open and click away
+   */
+  document.addEventListener('click', () => {
+    InputGroup.inputGroups.forEach(ip => {
+      ip.hideCombineDropDown();
+    });
+  });
+
+  /**
    * Register .result-list and .input-groups elements as draggable with "Move" button.
    */
   dragula([document.querySelector('.result-lists')], { 
