@@ -53,6 +53,9 @@ class Search {
 
 	static addSearchValue(nameVal) {
 		Search.searchValues.push(nameVal);
+		if (Search.searchValues.length === 5) {
+			document.querySelector('#add-input-group').style.display = 'none';
+		}
 	}
 
 	static updateSearchValue(nameVal) {
@@ -68,7 +71,12 @@ class Search {
 			if (sv.name !== name) {
 				return sv;
 			} 
-		})
+		});
+
+		if (Search.searchValues.length < 6 && document.querySelector('#add-input-group').style.display === 'none') {
+			document.querySelector('#add-input-group').style.display = 'inline';
+		}
+
 		Search.updateCombineDropDown();
 	}
 
