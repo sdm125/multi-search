@@ -154,7 +154,7 @@ class InputGroup {
 	}
 
 	addEventListeners() {
-		const thisInput = this;	
+		const thisInput = this;
 
 		this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
 			this.remove();

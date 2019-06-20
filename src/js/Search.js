@@ -64,11 +64,11 @@ class Search {
 	}
 
 	static removeSearchValue(name) {
-		Search.searchValues.forEach((val, i) => {
-			if (val.name = name) {
-				Search.searchValues.splice(i, 1);
-			}
-		});
+		Search.searchValues = Search.searchValues.filter(sv => {
+			if (sv.name !== name) {
+				return sv;
+			} 
+		})
 		Search.updateCombineDropDown();
 	}
 
