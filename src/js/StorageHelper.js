@@ -1,12 +1,12 @@
 class StorageHelper {
 	static saveCurrentSearches(name) {
-			let filteredSavedSearchValues = Search.searchValues.filter(searchValue => {
-				if (searchValue.value.trim() !== '') {
-					return searchValue;
-				}
-			});
+		let filteredSavedSearchValues = Search.searchValues.filter(searchValue => {
+			if (searchValue.value !== '') {
+				return searchValue;
+			}
+		});
 				
-			localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
+		localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
 	}
 
 	/**
@@ -17,13 +17,12 @@ class StorageHelper {
 		document.querySelector('.update-search-validate-modal h5').innerText = `Update ${name} with current search?`;
 		document.querySelector('.update-search-validate-modal').classList.remove('hide');
 
-
 		document.getElementById('update-saved-search').addEventListener('click', () => {
 			ModalControls.closeModal();
 			StorageHelper.saveCurrentSearches(name);
 		});
 	}
-	 
+
 	static validateSaveCurrentSearch(name) {
 		return localStorage.getItem(name) === null ? true : false;
 	}
