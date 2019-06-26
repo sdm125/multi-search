@@ -31,25 +31,27 @@ app.post('/search', (req, res) => {
 
 	for (formElm in req.body) {
 		if (formElm !== 'orientation') {
-			searchData.terms.push(req.body[formElm]);
-			searchPromises.push(new Promise((resolve, reject) => {
-				osmosis.get(`${process.env.SEARCH}${req.body[formElm]}`)
-				.set({'search': 'input["title=search"]@value',
-							'links': {
-								'titles': [process.env.TITLE_SEL],
-								'urls': [process.env.URL_SEL],
-								'descriptions': [process.env.DESCRIPTION_SEL]	
-							}
-						})
-				.data(searchData => {
-					searchData.links = searchData.links.titles.map((search, index) => {
-						return {title: searchData.links.titles[index], 
-										url: searchData.links.urls[index], 
-										description: searchData.links.descriptions[index]};
-					});	
-					resolve(searchData);
-				});
-			}));
+			if (req.body[formElm] !== '') {
+				searchData.terms.push({name: formElm, value: req.body[formElm]});
+				searchPromises.push(new Promise((resolve, reject) => {
+					osmosis.get(`${process.env.SEARCH}${req.body[formElm]}`)
+					.set({'search': 'input["title=search"]@value',
+								'links': {
+									'titles': [process.env.TITLE_SEL],
+									'urls': [process.env.URL_SEL],
+									'descriptions': [process.env.DESCRIPTION_SEL]	
+								}
+							})
+					.data(searchData => {
+						searchData.links = searchData.links.titles.map((search, index) => {
+							return {title: searchData.links.titles[index], 
+											url: searchData.links.urls[index], 
+											description: searchData.links.descriptions[index]};
+						});	
+						resolve(searchData);
+					});
+				}));
+			}
 		}
 		else {
 			searchData.orientation = req.body[formElm] === 'column';

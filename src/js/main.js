@@ -35,6 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /**
+   * Prevent form submit if single search empty input
+   */
+  document.getElementById('search-form').addEventListener('submit', function(e) {
+    let searches = document.querySelectorAll('.search');
+
+    if (searches.length === 1 && searches[0].value === '') {
+      e.preventDefault();
+    }
+  });
+
+  /**
    * Register .result-list and .input-groups elements as draggable with "Move" button.
    */
   dragula([document.querySelector('.result-lists')], { 
