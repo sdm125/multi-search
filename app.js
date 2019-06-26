@@ -13,8 +13,12 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+const generateID = () => {
+	return Math.random().toString(16).substring(2);
+}
+
 app.get('/', (req, res) => {
-	res.render('index');
+	res.render('index', {searchTermID: generateID()});
 });
 
 app.post('/search', (req, res) => {

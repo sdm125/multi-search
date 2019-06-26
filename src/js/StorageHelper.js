@@ -1,11 +1,8 @@
 class StorageHelper {
 	static saveCurrentSearches(name) {
 		let filteredSavedSearchValues = Search.searchValues.filter(searchValue => {
-			if (searchValue.value !== '') {
-				return searchValue;
-			}
+			return searchValue.value !== ''
 		});
-				
 		localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
 	}
 
@@ -122,11 +119,10 @@ class StorageHelper {
 	}
 
 	static loadSavedSearch(id) {
-		let searches = JSON.parse(localStorage.getItem(id));
-
+		let searchValues = JSON.parse(localStorage.getItem(id));
 		InputGroup.inputGroups.forEach(ip => ip.remove());
-
-		searches.forEach(search => {
+		
+		searchValues.forEach(search => {
 			Search.addInputGroup(search.name, search.value);
 		});
 

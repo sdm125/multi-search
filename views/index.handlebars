@@ -9,8 +9,8 @@
 		<div class="col-lg-8" style="margin: auto;">
 			<div class="input-groups">
 				{{#unless searchData.terms.length}}
-					<div class="input-group mb-3">
-						<input type="text" name="term0" class="search single-search form-control" placeholder="Search">
+					<div class="input-group mb-3" data-remove="{{searchTermID}}">
+						<input type="text" name="{{searchTermID}}" class="search single-search form-control" placeholder="Search">
 						<div class="input-group-append">
 							<div class="combine-list-container">
 								<button type="button" class="btn btn-outline-secondary js-combine combine-btn"><img src="/icons/plus-circle.svg"></button>

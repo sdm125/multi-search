@@ -1,10 +1,12 @@
 class InputGroup {
-	constructor(elm = this.createInputGroupElm()) {
+	constructor(name, value, elm = this.createInputGroupElm()) {
 		this._elm = elm;
 		this._searchInput = this._elm.querySelector('.search');
 		this._combineListContainer = this._elm.querySelector('.combine-list-container');
 		this._combineListElm = this._combineListContainer.querySelector('ul');
-		Search.addSearchValue({name: this._searchInput.name, value: this.value});
+		this._name = name ? name : this._searchInput.name;
+		this._value = value ? value : this._searchInput.value;
+		Search.addSearchValue({name: this._name, value: this._value});
 		InputGroup.inputGroups.push(this);
 		this.checkForSingleInputGroup();
 		this.addEventListeners();
@@ -16,6 +18,10 @@ class InputGroup {
 
 	get value() {
 		return this._searchInput.value;
+	}
+
+	set value(value) {
+	 this._value = value;
 	}
 
 	setValue(val) {
@@ -71,6 +77,10 @@ class InputGroup {
 		});
 	}
 
+	static generateID() {
+		return Math.random().toString(16).substring(2);
+	}
+
 	/**
 	 * Creates search input group element.
 	 */
@@ -83,11 +93,10 @@ class InputGroup {
 				combineList = document.createElement('ul'),
 				combine = document.createElement('button'),
 				move = document.createElement('button'),
-				newTermIndex = document.querySelectorAll('.search').length,
-				newTermName = `term${newTermIndex}`;
+				newTermName = InputGroup.generateID();
 
 		inputGroupElm.classList += 'input-group mb-3';
-		inputGroupElm.setAttribute('data-remove', `term${newTermIndex}`);
+		inputGroupElm.setAttribute('data-remove', newTermName);
 		inputGroupAppend.classList.add('input-group-append');
 
 		if (InputGroup.inputGroups.length < 1) {

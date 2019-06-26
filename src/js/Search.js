@@ -14,6 +14,7 @@ class Search {
 		 */
 		document.getElementById('reset').addEventListener('click', () => {
 			InputGroup.inputGroups.forEach(ip => ip.remove());
+			Search.searchValues.length = 0;
 			this.addInputGroup();
 		});
 
@@ -41,7 +42,7 @@ class Search {
 	}
 
 	static addInputGroup(name, value) {
-		let newInputGroup = new InputGroup();
+		let newInputGroup = new InputGroup(name, value);
 		name && newInputGroup.setName(name);
 		value && newInputGroup.setValue(value);
 		document.querySelector('.input-groups').appendChild(newInputGroup.elm);
@@ -67,11 +68,7 @@ class Search {
 	}
 
 	static removeSearchValue(name) {
-		Search.searchValues = Search.searchValues.filter(sv => {
-			if (sv.name !== name) {
-				return sv;
-			} 
-		});
+		Search.searchValues = Search.searchValues.filter(sv => sv.name !== name)
 
 		if (Search.searchValues.length < 6 && document.querySelector('#add-input-group').style.display === 'none') {
 			document.querySelector('#add-input-group').style.display = 'inline';

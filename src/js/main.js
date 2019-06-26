@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * Initialize InputGroup classes
    */
   document.querySelectorAll('.input-group').forEach(thisInputGroup => {
-    new InputGroup(thisInputGroup);
+    new InputGroup(thisInputGroup.name, thisInputGroup.value, thisInputGroup);
   });
 
   /**
