@@ -167,6 +167,7 @@ class InputGroup {
 
 		this._elm.querySelector('.js-remove-from-search').addEventListener('click', () => {
 			this.remove();
+			this.checkForSingleInputGroup();
 		});
 
 		this._elm.querySelector('.js-combine').addEventListener('click', function(event) {
