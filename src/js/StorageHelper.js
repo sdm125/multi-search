@@ -10,7 +10,9 @@ class StorageHelper {
 			if (document.querySelector('.saved-search-list-main-wrapper').classList.contains('hide')) {
 				document.querySelector('.saved-search-list-main-wrapper').classList.remove('hide');
 			}
-			document.querySelector('.saved-search-list-main ul').remove();
+			if (document.querySelector('.saved-search-list-main ul')) {
+				document.querySelector('.saved-search-list-main ul').remove();
+			}
 			document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
 		}
 	}

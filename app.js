@@ -54,7 +54,12 @@ app.post('/search', (req, res) => {
 			}
 		}
 		else {
-			searchData.orientation = req.body[formElm] === 'column';
+			if (Object.keys(req.body).length > 2) {
+				searchData.orientation = req.body[formElm] === 'column';
+			}
+			else {
+				searchData.orientation = true;
+			}
 		}
 	}
 
