@@ -92,6 +92,10 @@ class StorageHelper {
 							if (savedSearchListItem.innerText === savedSearch.name) {
 								savedSearchListItem.remove();
 							}
+							// Hide saved save list div from index if there are no saved searches
+							if (StorageHelper.getAllSavedSearches().length === 0) {
+								document.querySelector('.saved-search-list-main-wrapper').classList.add('hide');
+							}
 						});
 					}
 				});
