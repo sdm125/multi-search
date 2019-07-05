@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * Add saved search list component to home
    */
   if (window.location.pathname === '/' && StorageHelper.getAllSavedSearches().length > 0) {
-    document.querySelector('.saved-search-list-main-wrapper').classList.remove('hide')
+    document.querySelector('.saved-search-list-main-wrapper').classList.remove('hide');
     document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
   }
 

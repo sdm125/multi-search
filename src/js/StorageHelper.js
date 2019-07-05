@@ -1,9 +1,18 @@
 class StorageHelper {
 	static saveCurrentSearches(name) {
 		let filteredSavedSearchValues = Search.searchValues.filter(searchValue => {
-			return searchValue.value !== ''
+			return searchValue.value !== '';
 		});
+
 		localStorage.setItem(name, JSON.stringify(filteredSavedSearchValues));
+
+		if (window.location.pathname === '/') {
+			if (document.querySelector('.saved-search-list-main-wrapper').classList.contains('hide')) {
+				document.querySelector('.saved-search-list-main-wrapper').classList.remove('hide');
+			}
+			document.querySelector('.saved-search-list-main ul').remove();
+			document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
+		}
 	}
 
 	/**
@@ -18,6 +27,11 @@ class StorageHelper {
 			ModalControls.closeModal();
 			StorageHelper.saveCurrentSearches(name);
 		});
+
+		if (window.location.pathname === '/') {
+			document.querySelector('.saved-search-list-main ul').remove();
+			document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
+		}
 	}
 
 	static validateSaveCurrentSearch(name) {
@@ -88,15 +102,15 @@ class StorageHelper {
 					this.closest('li').remove();
 
 					if (document.querySelector('.saved-search-list-main')) {
-						document.querySelectorAll('.saved-search-list-main ul li').forEach(savedSearchListItem => {
-							if (savedSearchListItem.innerText === savedSearch.name) {
-								savedSearchListItem.remove();
-							}
-							// Hide saved save list div from index if there are no saved searches
-							if (StorageHelper.getAllSavedSearches().length === 0) {
-								document.querySelector('.saved-search-list-main-wrapper').classList.add('hide');
-							}
-						});
+						if (window.location.pathname === '/') {
+							document.querySelector('.saved-search-list-main ul').remove();
+							document.querySelector('.saved-search-list-main').appendChild(StorageHelper.getAllSavedSearchesListElm(StorageHelper.loadSavedSearch, 'Saved Searches', false));
+						}
+
+						// Hide saved save list div from index if there are no saved searches
+						if (StorageHelper.getAllSavedSearches().length === 0) {
+							document.querySelector('.saved-search-list-main-wrapper').classList.add('hide');
+						}
 					}
 				});
 			});
