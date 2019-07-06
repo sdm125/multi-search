@@ -2,6 +2,22 @@
 $rowStripeColor: #f6f4f4;
 $rowHighlightColor: #e1f5fe;
 
+header {
+  .magnifying-glass {
+    &:nth-of-type(1) {
+      height: 3rem;
+    }
+  
+    &:nth-of-type(2) {
+      height: 4rem;
+    }
+  
+    &:nth-of-type(3) {
+      height: 5rem;
+    }
+  }
+}
+
 a {
   color: #03A9F4;
 }
@@ -92,44 +108,78 @@ a {
 }
 
 .nav-toggle {
-  position: relative;
-  height: 2.25rem;
-  z-index: 102;
-  transition: transform 200ms;
+  display: none;
+
+  // hamburger
+  @media screen and (max-width: 575px) {
+    display: inline;
+    position: relative;
+    height: 2.25rem;
+    z-index: 102;
+    transition: transform 200ms;
+  }
 }
 
-.pop-out-menu {
-  position: absolute;
-  height: 100vh;
-  top: 0;
-  padding: 20px;
-  z-index: 101;
-  background: rgba(242, 242, 242, .95);
-  transform: translateX(-250px);
-  transition: transform 200ms;
+nav {
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ced4da;
+  padding: 5px;
+
+  .menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   
-  &.active {
-    transform: translateX(0);
-  }
+    // hamburger
+    @media screen and (max-width: 575px) {
+      position: absolute;
+      display: block;
+      height: 100vh;
+      background: rgba(242, 242, 242, .95);
+      top: 0;
+      left: 0;
+      padding-top: 60px;
+      z-index: 101;
+      transform: translateX(-250px);
+      transition: transform 200ms;
+    }
 
-  &> ul {
-    list-style-type: none;
-    padding-top: 40px;
-    padding-left: 0;
+    &> div {
+      display: flex;
 
-    li {
+      //hamburger
+      @media screen and (max-width: 575px) {
+        display: block;
+      }
+    }
+    
+    &.active {
+      transform: translateX(0);
+    }
+
+    div {
       font-size: 1.25rem;
       cursor: pointer;
-      margin-bottom: .5rem;
       text-transform: uppercase;
-      border-radius: 10px;
       padding: 5px;
 
       img {
         height: 25px;
         width: 25px;
+
+        //hamburger
+        @media screen and (max-width: 575px) {
+          height: 30px;
+          width: 30px;
+        }
       }
     }
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
   }
 }
 
@@ -139,20 +189,6 @@ a {
 
 .container {
   transition: transform 200ms;
-}
-
-.magnifying-glass {
-  &:nth-child(1) {
-    height: 3rem;
-  }
-
-  &:nth-child(2) {
-    height: 4rem;
-  }
-
-  &:nth-child(3) {
-    height: 5rem;
-  }
 }
 
 .single-search {

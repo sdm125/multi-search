@@ -4,7 +4,7 @@ class NavControls {
 		document.querySelector('.modal-container').classList.remove('hide');
 		navToggleBtn.setAttribute('data-toggle', 'open');
 		navToggleBtn.src = '/icons/x.svg';
-		document.querySelector('.pop-out-menu').classList.add('active');
+		document.querySelector('.menu').classList.add('active');
 	}
 
 	static closeNav(hideModal) {
@@ -12,7 +12,7 @@ class NavControls {
 		if (hideModal) document.querySelector('.modal-container').classList.add('hide');
 		navToggleBtn.setAttribute('data-toggle', 'closed');
 		navToggleBtn.src = '/icons/menu.svg';
-		document.querySelector('.pop-out-menu').classList.remove('active');
+		document.querySelector('.menu').classList.remove('active');
 	}
 	
 	static init() {

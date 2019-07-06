@@ -59,6 +59,7 @@ class StorageHelper {
 		let deleteSavedSearch;
 		
 		savedSearchListItemTitle.innerText = title;
+		savedSearchListItemTitle.classList.add('mb-0');
 		savedSearchListItem.appendChild(savedSearchListItemTitle);
 		savedSearchListItem.classList += 'list-group-item text-center';
 		savedSearchListElm.appendChild(savedSearchListItem);
