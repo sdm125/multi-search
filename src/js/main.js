@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   Search.initSearchControls();
-  NavControls.init();
   ModalControls.init();
   Settings.init();
 

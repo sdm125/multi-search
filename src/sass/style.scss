@@ -2,6 +2,16 @@
 $rowStripeColor: #f6f4f4;
 $rowHighlightColor: #e1f5fe;
 
+html {
+  min-height: 100%;
+  position: relative;
+}
+
+body {
+  height: 100%;
+  margin-bottom: 50px;
+}
+
 header {
   .magnifying-glass {
     &:nth-of-type(1) {
@@ -107,52 +117,15 @@ a {
   display: none !important;
 }
 
-.nav-toggle {
-  display: none;
-
-  // hamburger
-  @media screen and (max-width: 575px) {
-    display: inline;
-    position: relative;
-    height: 2.25rem;
-    z-index: 102;
-    transition: transform 200ms;
-  }
-}
-
 nav {
-  margin-bottom: 16px;
   border-bottom: 1px solid #ced4da;
-  padding: 5px;
+  padding: 0 5px;
 
   .menu {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  
-    // hamburger
-    @media screen and (max-width: 575px) {
-      position: absolute;
-      display: block;
-      height: 100vh;
-      background: rgba(242, 242, 242, .95);
-      top: 0;
-      left: 0;
-      padding-top: 60px;
-      z-index: 101;
-      transform: translateX(-250px);
-      transition: transform 200ms;
-    }
-
-    &> div {
-      display: flex;
-
-      //hamburger
-      @media screen and (max-width: 575px) {
-        display: block;
-      }
-    }
     
     &.active {
       transform: translateX(0);
@@ -162,17 +135,15 @@ nav {
       font-size: 1.25rem;
       cursor: pointer;
       text-transform: uppercase;
-      padding: 5px;
+      padding: 5px 10px;
+
+      &:first-child {
+        padding-left: 5px;
+      }
 
       img {
         height: 25px;
         width: 25px;
-
-        //hamburger
-        @media screen and (max-width: 575px) {
-          height: 30px;
-          width: 30px;
-        }
       }
     }
   }
@@ -316,7 +287,16 @@ nav {
   height: calc(1.5em + .75rem + 4px);
 }
 
-.footer-copyright {
-  font-size: .5rem;
-  color: #999;
+footer {
+  position: absolute;
+  bottom: 0;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  height: 15px;
+
+  .footer-copyright {
+    font-size: .5rem;
+    color: #999;
+  }
 }

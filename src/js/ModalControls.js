@@ -46,7 +46,6 @@ class ModalControls {
 		 */
 		document.querySelector('.modal-container').addEventListener('click', function(e) {
 			if (e.target.classList.contains('modal-container')) {
-				NavControls.closeNav();
 				ModalControls.closeModal();
 			}
 		});
@@ -55,7 +54,6 @@ class ModalControls {
 		 * Open save current search modal
 		 */
 		document.getElementById('open-save-modal').addEventListener('click', () => {
-			NavControls.closeNav();
 			this.showModal('save');
 		});
 
@@ -77,7 +75,6 @@ class ModalControls {
 		 * Open update saved search modal. Select saved search from list. Sets update button data-update-search attribute for update-search-validate-modal.
 		 */
 		document.getElementById('open-update-modal').addEventListener('click', () => {
-			NavControls.closeNav();
 			this.showModal('update');
 
 			if (localStorage.length > 0) {
@@ -96,7 +93,6 @@ class ModalControls {
 		 * Load saved searches from local storage.
 		 */
 		document.getElementById('open-load-modal').addEventListener('click', function(e) {
-			NavControls.closeNav();
 			ModalControls.showModal('load');
 
 			if (localStorage.length > 0) {
@@ -112,7 +108,6 @@ class ModalControls {
 		});
 
 		document.getElementById('open-settings-modal').addEventListener('click', function() {
-			NavControls.closeNav();
 			ModalControls.showModal('settings');
 			let settings = Settings.get();
 			for(let setting in settings) {
