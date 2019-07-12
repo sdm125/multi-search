@@ -21,16 +21,26 @@ class Search {
 		/**
 		 * Toggles result lists as a row or column.
 		 */
-		document.querySelectorAll('.js-toggle-list-orientation').forEach(toggleOrientation => {
+		document.querySelectorAll('.toggle-list-orientation').forEach(toggleOrientation => {
 			toggleOrientation.addEventListener('click', function() {
-				if (this.value === 'row') {
+				if (this.getAttribute('data-value') === 'row') {
+					document.querySelector('input[name="orientation"]').value = 'row';
+					if (this.nextElementSibling.classList.contains('active')) {
+						this.nextElementSibling.classList.remove('active');
+					}
+					if (!this.classList.contains('active')) this.classList.add('active');
 					resultLists.classList.add('flex-row');
 					resultLists.classList.remove('ml-auto');
 					resultLists.classList.remove('mr-auto');
 					resultLists.classList.remove('col-lg-8');
 					resultLists.classList.remove('flex-column');
 				}
-				else if (this.value === 'column') {
+				else if (this.getAttribute('data-value') === 'column') {
+					if (this.previousElementSibling.classList.contains('active')) {
+						this.previousElementSibling.classList.remove('active');
+					}
+					document.querySelector('input[name="orientation"]').value = 'column';
+					if (!this.classList.contains('active')) this.classList.add('active');
 					resultLists.classList.add('flex-column');
 					resultLists.classList.add('col-lg-8');
 					resultLists.classList.add('ml-auto');

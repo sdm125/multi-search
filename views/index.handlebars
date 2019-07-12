@@ -43,13 +43,14 @@
 					</div>
 				{{/each}}
 			</div>
-			<button type="submit" class="btn btn-outline-dark">SUBMIT</button>
+			<button type="submit" class="btn btn-outline-dark">Search</button>
 			<button type="button" id="add-input-group" class="btn btn-outline-dark">+ <img src="/icons/search.svg"></button>
 			<div class="multi-search-controls">
+				<button type="button" class="btn btn-outline-dark toggle-list-orientation {{#unless searchData.orientation}}active{{/unless}}" data-value="row"><img src="/icons/align-justify.svg" class="toggle-list-orientation-icon-row"></button>
+				<button type="button" class="btn btn-outline-dark toggle-list-orientation {{#if searchData.orientation}}active{{/if}}" data-value="column"><img src="/icons/align-justify.svg" class="toggle-list-orientation-icon-column"></button>
+				<input type="hidden" name="orientation" value="column">
 				<button type="button" id="reset" class="btn btn-outline-dark">Reset</button>
-				<label><input type="radio" name="orientation" value="row" class="mr-2 js-toggle-list-orientation" {{#unless searchData.orientation}}checked{{/unless}}>Row</label>
-				<label><input type="radio" name="orientation" value="column" class="mr-2 js-toggle-list-orientation" {{#if searchData.orientation}}checked{{/if}}>Column</label>
-			</div>	
+			</div>
 		</div>
 	</div>
 </form>

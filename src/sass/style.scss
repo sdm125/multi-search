@@ -162,17 +162,20 @@ nav {
   transition: transform 200ms;
 }
 
-.single-search {
-  border-top-right-radius: .25rem !important;
-  border-bottom-right-radius: .25rem !important;
-}
-
 .multi-search {
   border-right: 0;
 }
 
 .multi-search-controls {
   display: inline;
+
+  .toggle-list-orientation-icon-column {
+    transform: rotate(90deg) scaleX(.80);
+  }
+  // TODO override SASS var
+  .btn-outline-dark:not(:disabled):not(.disabled).active {
+    background: #2196f3;
+  }
 }
 
 .combine-btn {
