@@ -4,6 +4,7 @@ const env = require('dotenv').config();
 const path = require('path');
 const exphbs = require('express-handlebars');
 const osmosis = require('osmosis');
+const UserAgent = require('user-agents');
 
 app.engine('handlebars', exphbs({	defaultLayout: 'main'}));
 
@@ -35,6 +36,7 @@ app.post('/search', (req, res) => {
 				searchData.terms.push({name: formElm, value: req.body[formElm]});
 				searchPromises.push(new Promise((resolve, reject) => {
 					osmosis.get(`${process.env.SEARCH}${req.body[formElm]}`)
+					.config('user_agent', new UserAgent())
 					.set({'search': 'input["title=search"]@value',
 								'links': {
 									'titles': [process.env.TITLE_SEL],
@@ -62,7 +64,7 @@ app.post('/search', (req, res) => {
 			}
 		}
 	}
-
+		
 	Promise.all(searchPromises).then(data => {
 		searchData.results = data;
 		res.render('index', {searchData});	
