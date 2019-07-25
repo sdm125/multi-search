@@ -23,9 +23,7 @@ gulp.task('sass', () => {
 // Copy icons
 gulp.task('copyIcons', () =>
 	gulp.src('src/icons/*')
-    .pipe(gulp.dest('dist/icons')),
-  gulp.src('/favicon.ico')
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist/icons'))
 );
 
 // Scripts
