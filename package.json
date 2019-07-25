@@ -21,7 +21,8 @@
     "nodemon": "^1.19.0",
     "osmosis": "^1.1.10",
     "request": "^2.88.0",
-    "unirest": "^0.6.0"
+    "unirest": "^0.6.0",
+    "user-agents": "^1.0.317"
   },
   "devDependencies": {
     "gulp": "^4.0.2",

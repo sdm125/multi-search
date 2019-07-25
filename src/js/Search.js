@@ -23,24 +23,16 @@ class Search {
 		 */
 		document.querySelectorAll('.toggle-list-orientation').forEach(toggleOrientation => {
 			toggleOrientation.addEventListener('click', function() {
-				if (this.getAttribute('data-value') === 'row') {
-					document.querySelector('input[name="orientation"]').value = 'row';
-					if (this.nextElementSibling.classList.contains('active')) {
-						this.nextElementSibling.classList.remove('active');
-					}
-					if (!this.classList.contains('active')) this.classList.add('active');
+				if (parseInt(this.getAttribute('data-value')) === 1) {
+					document.querySelector('input[name="orientation"]').value = 'column';
 					resultLists.classList.add('flex-row');
 					resultLists.classList.remove('ml-auto');
 					resultLists.classList.remove('mr-auto');
 					resultLists.classList.remove('col-lg-8');
 					resultLists.classList.remove('flex-column');
 				}
-				else if (this.getAttribute('data-value') === 'column') {
-					if (this.previousElementSibling.classList.contains('active')) {
-						this.previousElementSibling.classList.remove('active');
-					}
-					document.querySelector('input[name="orientation"]').value = 'column';
-					if (!this.classList.contains('active')) this.classList.add('active');
+				else if (parseInt(this.getAttribute('data-value')) === 0) {
+					document.querySelector('input[name="orientation"]').value = 'row';
 					resultLists.classList.add('flex-column');
 					resultLists.classList.add('col-lg-8');
 					resultLists.classList.add('ml-auto');
@@ -56,6 +48,10 @@ class Search {
 		name && newInputGroup.setName(name);
 		value && newInputGroup.setValue(value);
 		document.querySelector('.input-groups').appendChild(newInputGroup.elm);
+
+		if (InputGroup.inputGroups.length > 1) {
+			document.querySelector('.single-search').classList.remove('single-search');
+		}
 	};
 
 	static getSearchValue(val) {

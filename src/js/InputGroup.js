@@ -141,7 +141,7 @@ class InputGroup {
 
 	showMultiSearchControls() {
 		this.elm.querySelector('.input-group-append').classList.remove('hide');
-		this._searchInput.classList.add('single-search');
+		this._searchInput.classList.remove('single-search');
 		this._searchInput.classList.add('multi-search');
 	}
 

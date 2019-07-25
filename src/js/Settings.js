@@ -12,7 +12,7 @@ class Settings {
       localStorage.setItem('settings', JSON.stringify({
         showDescriptions: 0,
         collapseResults: 0,
-        darkMode: 0
+        resultsDisplay: 0
       }));
     }
   }
