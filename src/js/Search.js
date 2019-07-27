@@ -50,7 +50,9 @@ class Search {
 		document.querySelector('.input-groups').appendChild(newInputGroup.elm);
 
 		if (InputGroup.inputGroups.length > 1) {
-			document.querySelector('.single-search').classList.remove('single-search');
+			if (document.querySelector('.single-search')) {
+				document.querySelector('.single-search').classList.remove('single-search');
+			}
 		}
 	};
 
