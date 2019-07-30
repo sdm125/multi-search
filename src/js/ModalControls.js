@@ -110,9 +110,10 @@ class ModalControls {
 		document.getElementById('open-settings-modal').addEventListener('click', function() {
 			ModalControls.showModal('settings');
 			let settings = Settings.get();
+			console.log(settings)
 			for(let setting in settings) {
 				document.querySelectorAll(`img[data-setting="${setting}"]`).forEach(settingBtn => {
-					if (settingBtn.getAttribute('data-value') !== settings[setting]) {
+					if (parseInt(settingBtn.getAttribute('data-value')) !== settings[setting]) {
 						if (settingBtn.classList.contains('hide')) {
 							settingBtn.classList.remove('hide');
 						}

@@ -23,21 +23,21 @@ class Search {
 		 */
 		document.querySelectorAll('.toggle-list-orientation').forEach(toggleOrientation => {
 			toggleOrientation.addEventListener('click', function() {
-				if (parseInt(this.getAttribute('data-value')) === 1) {
+				if (parseInt(this.getAttribute('data-value')) === 0) {
 					document.querySelector('input[name="orientation"]').value = 'column';
-					resultLists.classList.add('flex-row');
-					resultLists.classList.remove('ml-auto');
-					resultLists.classList.remove('mr-auto');
-					resultLists.classList.remove('col-lg-8');
-					resultLists.classList.remove('flex-column');
-				}
-				else if (parseInt(this.getAttribute('data-value')) === 0) {
-					document.querySelector('input[name="orientation"]').value = 'row';
 					resultLists.classList.add('flex-column');
 					resultLists.classList.add('col-lg-8');
 					resultLists.classList.add('ml-auto');
 					resultLists.classList.add('mr-auto');
 					resultLists.classList.remove('flex-row');
+				}
+				else if (parseInt(this.getAttribute('data-value')) === 1) {
+					document.querySelector('input[name="orientation"]').value = 'row';
+					resultLists.classList.add('flex-row');
+					resultLists.classList.remove('ml-auto');
+					resultLists.classList.remove('mr-auto');
+					resultLists.classList.remove('col-lg-8');
+					resultLists.classList.remove('flex-column');
 				}
 			});
 		});
