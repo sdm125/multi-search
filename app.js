@@ -67,7 +67,11 @@ app.post('/search', (req, res) => {
 		
 	Promise.all(searchPromises).then(data => {
 		searchData.results = data;
-		res.render('index', {searchData});	
+		searchData.results = searchData.results.map(result => {
+			result.urlEncoded = encodeURIComponent(result.search);
+			return result;
+		});
+		res.render('index', {searchData});
 	}).catch(err => console.log(err));
 });
 
