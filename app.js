@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 	res.render('index', {searchTermID: generateID()});
 });
 
-app.post('/search', (req, res) => {
+app.get('/search', (req, res) => {
 	const searchPromises = [];
 	let searchData = {
 		terms: [],
@@ -30,12 +30,14 @@ app.post('/search', (req, res) => {
 		orientation: ''
 	};
 
-	for (formElm in req.body) {
+	console.log(req.query)
+
+	for (formElm in req.query) {
 		if (formElm !== 'orientation') {
-			if (req.body[formElm] !== '') {
-				searchData.terms.push({name: formElm, value: req.body[formElm]});
+			if (req.query[formElm] !== '') {
+				searchData.terms.push({name: formElm, value: req.query[formElm]});
 				searchPromises.push(new Promise((resolve, reject) => {
-					osmosis.get(`${process.env.SEARCH}${req.body[formElm]}`)
+					osmosis.get(`${process.env.SEARCH}${req.query[formElm]}`)
 					.config('user_agent', new UserAgent())
 					.set({'search': 'input["title=search"]@value',
 								'links': {
@@ -56,8 +58,8 @@ app.post('/search', (req, res) => {
 			}
 		}
 		else {
-			if (Object.keys(req.body).length > 2) {
-				searchData.orientation = req.body[formElm] === 'column';
+			if (Object.keys(req.query).length > 2) {
+				searchData.orientation = req.query[formElm] === 'column';
 			}
 			else {
 				searchData.orientation = true;
