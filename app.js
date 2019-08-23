@@ -30,8 +30,6 @@ app.get('/search', (req, res) => {
 		orientation: ''
 	};
 
-	console.log(req.query)
-
 	for (formElm in req.query) {
 		if (formElm !== 'orientation') {
 			if (req.query[formElm] !== '') {

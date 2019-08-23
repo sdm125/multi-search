@@ -68,7 +68,7 @@ class InputGroup {
 	updateCombineDropDown(updatedCombineDropDownList) {
 		const thisInput = this;
 
-		this._combineListElm && this._combineListElm.remove();
+		if (this._combineListElm) this._combineListElm.remove();
 		this._combineListElm = updatedCombineDropDownList;
 		this._combineListContainer.appendChild(this._combineListElm);
 

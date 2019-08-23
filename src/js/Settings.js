@@ -4,7 +4,6 @@ class Settings {
     let value = Object.values(update)[0];
     let settings = JSON.parse(localStorage.getItem('settings'));
     settings[key] = parseInt(value);
-    console.log(settings)
     localStorage.setItem('settings', JSON.stringify(settings));
   }
   

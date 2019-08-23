@@ -33,7 +33,7 @@
 								<button type="button" class="btn btn-outline-secondary js-combine combine-btn"><img src="/icons/plus-circle.svg"></button>
 								<ul>
 									{{#each ../searchData.terms}}
-										<li class="combine-item" data-search-term="{{this}}">{{this}}</li>
+										<li class="combine-item" data-search-term="{{this.value}}">{{this.value}}</li>
 									{{/each}}
 								</ul>
 							</div>
