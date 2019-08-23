@@ -79,8 +79,11 @@
 					</li>
 					{{#each this.links}}
 						<li class="list-group-item result-item">
-							<a href="{{this.url}}">{{this.title}}</a><br>
-							<p class="description">{{this.description}}</p>
+							<div class="result-item-container">
+								<a href="{{this.url}}">{{this.title}}</a><br>
+								<p class="description">{{this.description}}</p>
+								<a class="link" href="{{this.url}}">{{this.url}}</a>
+							</div>
 						</li>
 					{{/each}}
 				</ul>

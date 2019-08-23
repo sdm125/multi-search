@@ -201,8 +201,18 @@ nav {
     justify-content: space-between;
     width: 100%; }
 
-.result-item:nth-child(even) {
-  background: #f6f4f4; }
+.result-item {
+  padding: 0; }
+  .result-item:nth-child(even) {
+    background: #f6f4f4; }
+  .result-item .result-item-container {
+    margin: .75rem 1.25rem;
+    overflow: hidden; }
+  .result-item p.description {
+    margin: 5px 0; }
+  .result-item .link {
+    color: #4caf50;
+    white-space: nowrap; }
 
 .list-container {
   margin: 5px;
